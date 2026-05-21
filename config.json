@@ -1,0 +1,12 @@
+{
+  "tk":  { "name": "Tra Tồn Kho",  "url": "https://docs.google.com/spreadsheets/d/1aT0ovPz7SCYCcl0LPfS7bTXUuX806FQZ/edit", "sh": "tồn kho" },
+  "b1":  { "name": "Scan BBKT 1",  "url": "" },
+  "b2":  { "name": "Scan BBKT 2",  "url": "" },
+  "b3":  { "name": "Scan BBKT 3",  "url": "" },
+  "p1":  { "name": "P.KT AT 1",    "url": "https://docs.google.com/spreadsheets/d/1Uzw-8Czr-3rxKUpJUcEt0rUyUk-SrdV-/edit" },
+  "p2":  { "name": "P.KTAT 2",     "url": "https://docs.google.com/spreadsheets/d/1QEf2cStjaD9R1tIx1tXO23HbL90Yzym_/edit" },
+  "p4":  { "name": "P.KTAT 4",     "url": "" },
+  "s1":  { "name": "",             "url": "" },
+  "s2":  { "name": "",             "url": "" },
+  "s3":  { "name": "",             "url": "" }
+}

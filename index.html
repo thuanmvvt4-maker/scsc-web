@@ -227,9 +227,15 @@ const DEF = {
 };
 
 // ── Settings ──────────────────────────────────────────────────
+let _remoteCfg=null;
+async function fetchRemoteCfg(){
+  try{const r=await fetch('config.json?_='+Date.now());if(r.ok)_remoteCfg=await r.json();}
+  catch{}
+}
 function loadCfg(){
-  try{const s=localStorage.getItem('scscCfg4');return s?Object.assign({},DEF,JSON.parse(s)):{...DEF}}
-  catch{return{...DEF}}
+  const base=Object.assign({},DEF,_remoteCfg||{});
+  try{const s=localStorage.getItem('scscCfg4');return s?Object.assign({},base,JSON.parse(s)):base;}
+  catch{return base;}
 }
 function openSettings(){
   const c=loadCfg();
@@ -266,7 +272,7 @@ function saveSettings(){
   cache={};
   closeSettings();
   buildNav();
-  toast('✅ Đã lưu cài đặt!');
+  toast('✅ Đã lưu cài đặt! (ghi đè cài đặt từ server)');
 }
 
 // ── Nav ───────────────────────────────────────────────────────
@@ -398,7 +404,7 @@ function hilite(e,t){if(!t)return e;const r=t.replace(/[.*+?^${}()|[\]\\]/g,'\\$
 let toastTmr;
 function toast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.style.display='block';clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.style.display='none',3500)}
 
-buildNav();
+fetchRemoteCfg().then(()=>buildNav());
 </script>
 </body>
 </html>
