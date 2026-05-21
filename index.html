@@ -157,24 +157,21 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
       </div>
     </div>
 
-    <!-- Nút 5, 6, 7: P.KTAT -->
+    <!-- Nút 5, 6, 7: P.KTAT OneDrive -->
     <div class="fsec">
-      <div class="fsec-title">Nút 5, 6, 7 — Tìm kiếm P.KTAT (Google Sheets · sheet: QUAN LY BBKT)</div>
+      <div class="fsec-title">Nút 5, 6, 7 — P.KTAT (mở link OneDrive)</div>
       <div class="fg-row">
         <div class="fg"><label>Tên nút 5</label><input id="s-p1-name" placeholder="P.KT AT 1"></div>
-        <div class="fg"><label>Tên Sheet nút 5</label><input id="s-p1-sh" placeholder="QUAN LY BBKT"></div>
+        <div class="fg"><label>Link nút 5</label><input id="s-p1-url" type="url" placeholder="https://...sharepoint.com/..."></div>
       </div>
-      <div class="fg"><label>Link Google Sheets nút 5</label><input id="s-p1-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
-      <div class="fg-row" style="margin-top:10px">
+      <div class="fg-row">
         <div class="fg"><label>Tên nút 6</label><input id="s-p2-name" placeholder="P.KTAT 2"></div>
-        <div class="fg"><label>Tên Sheet nút 6</label><input id="s-p2-sh" placeholder="QUAN LY BBKT"></div>
+        <div class="fg"><label>Link nút 6</label><input id="s-p2-url" type="url" placeholder="https://...sharepoint.com/..."></div>
       </div>
-      <div class="fg"><label>Link Google Sheets nút 6</label><input id="s-p2-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
-      <div class="fg-row" style="margin-top:10px">
+      <div class="fg-row">
         <div class="fg"><label>Tên nút 7</label><input id="s-p4-name" placeholder="P.KTAT 4"></div>
-        <div class="fg"><label>Tên Sheet nút 7</label><input id="s-p4-sh" placeholder="QUAN LY BBKT"></div>
+        <div class="fg"><label>Link nút 7</label><input id="s-p4-url" type="url" placeholder="https://...sharepoint.com/..."></div>
       </div>
-      <div class="fg"><label>Link Google Sheets nút 7</label><input id="s-p4-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
     </div>
 
     <!-- Nút dự phòng 8, 9, 10 -->
@@ -212,9 +209,9 @@ const DEF = {
   b1: {name:'Scan BBKT 1',  url:''},
   b2: {name:'Scan BBKT 2',  url:''},
   b3: {name:'Scan BBKT 3',  url:''},
-  p1: {name:'P.KT AT 1',    url:'https://docs.google.com/spreadsheets/d/1Uzw-8Czr-3rxKUpJUcEt0rUyUk-SrdV-/edit', sh:'QUAN LY BBKT'},
-  p2: {name:'P.KTAT 2',     url:'https://docs.google.com/spreadsheets/d/1QEf2cStjaD9R1tIx1tXO23HbL90Yzym_/edit', sh:'QUAN LY BBKT'},
-  p4: {name:'P.KTAT 4',     url:'', sh:'QUAN LY BBKT'},
+  p1: {name:'P.KT AT 1',    url:'https://cmsihn-my.sharepoint.com/:x:/g/personal/thuanmv_vinhtan4tpp_evn_com_vn/IQBbx3HQVS-DS7i9S95pYxyWAY1sTv5scdRbHZBiGJykVYM?e=Rnd6n0'},
+  p2: {name:'P.KTAT 2',     url:''},
+  p4: {name:'P.KTAT 4',     url:''},
   s1: {name:'', url:''},
   s2: {name:'', url:''},
   s3: {name:'', url:''}
@@ -226,16 +223,16 @@ const BTNS = {
   2:  {type:'link',   cfgKey:'b1', cls:'t2'},
   3:  {type:'link',   cfgKey:'b2', cls:'t2'},
   4:  {type:'link',   cfgKey:'b3', cls:'t2'},
-  5:  {type:'search', cfgKey:'p1', cls:'t3', sCol:4, rCols:[1,3,4,13,14,7]},
-  6:  {type:'search', cfgKey:'p2', cls:'t3', sCol:4, rCols:[1,3,4,13,14,7]},
-  7:  {type:'search', cfgKey:'p4', cls:'t3', sCol:4, rCols:[1,3,4,13,14,7]},
+  5:  {type:'link', cfgKey:'p1', cls:'t3'},
+  6:  {type:'link', cfgKey:'p2', cls:'t3'},
+  7:  {type:'link', cfgKey:'p4', cls:'t3'},
   8:  {type:'link',   cfgKey:'s1', cls:'ts'},
   9:  {type:'link',   cfgKey:'s2', cls:'ts'},
   10: {type:'link',   cfgKey:'s3', cls:'ts'}
 };
 
 // Icons per type
-const ICONS = {t1:'🔎', t2:'📋', t3:'🔍', ts:'🔗'};
+const ICONS = {t1:'🔎', t2:'📋', t3:'📂', ts:'🔗'};
 
 // ── Settings I/O ─────────────────────────────────────────────
 function loadCfg(){
@@ -249,9 +246,9 @@ function openSettings(){
   document.getElementById('s-b1-name').value=c.b1.name;document.getElementById('s-b1-url').value=c.b1.url;
   document.getElementById('s-b2-name').value=c.b2.name;document.getElementById('s-b2-url').value=c.b2.url;
   document.getElementById('s-b3-name').value=c.b3.name;document.getElementById('s-b3-url').value=c.b3.url;
-  document.getElementById('s-p1-name').value=c.p1.name;document.getElementById('s-p1-url').value=c.p1.url;document.getElementById('s-p1-sh').value=c.p1.sh;
-  document.getElementById('s-p2-name').value=c.p2.name;document.getElementById('s-p2-url').value=c.p2.url;document.getElementById('s-p2-sh').value=c.p2.sh;
-  document.getElementById('s-p4-name').value=c.p4.name;document.getElementById('s-p4-url').value=c.p4.url;document.getElementById('s-p4-sh').value=c.p4.sh;
+  document.getElementById('s-p1-name').value=c.p1.name;document.getElementById('s-p1-url').value=c.p1.url;
+  document.getElementById('s-p2-name').value=c.p2.name;document.getElementById('s-p2-url').value=c.p2.url;
+  document.getElementById('s-p4-name').value=c.p4.name;document.getElementById('s-p4-url').value=c.p4.url;
   document.getElementById('s-s1-name').value=c.s1.name;document.getElementById('s-s1-url').value=c.s1.url;
   document.getElementById('s-s2-name').value=c.s2.name;document.getElementById('s-s2-url').value=c.s2.url;
   document.getElementById('s-s3-name').value=c.s3.name;document.getElementById('s-s3-url').value=c.s3.url;
@@ -265,9 +262,9 @@ function saveSettings(){
     b1:{name:g('s-b1-name')||'Scan BBKT 1', url:g('s-b1-url')},
     b2:{name:g('s-b2-name')||'Scan BBKT 2', url:g('s-b2-url')},
     b3:{name:g('s-b3-name')||'Scan BBKT 3', url:g('s-b3-url')},
-    p1:{name:g('s-p1-name')||'P.KT AT 1',   url:g('s-p1-url'), sh:g('s-p1-sh')||'QUAN LY BBKT'},
-    p2:{name:g('s-p2-name')||'P.KTAT 2',    url:g('s-p2-url'), sh:g('s-p2-sh')||'QUAN LY BBKT'},
-    p4:{name:g('s-p4-name')||'P.KTAT 4',    url:g('s-p4-url'), sh:g('s-p4-sh')||'QUAN LY BBKT'},
+    p1:{name:g('s-p1-name')||'P.KT AT 1',   url:g('s-p1-url')},
+    p2:{name:g('s-p2-name')||'P.KTAT 2',    url:g('s-p2-url')},
+    p4:{name:g('s-p4-name')||'P.KTAT 4',    url:g('s-p4-url')},
     s1:{name:g('s-s1-name'), url:g('s-s1-url')},
     s2:{name:g('s-s2-name'), url:g('s-s2-url')},
     s3:{name:g('s-s3-name'), url:g('s-s3-url')}
