@@ -4,23 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Phần Mềm Tổng Hợp Sửa Chữa</title>
-<!-- Microsoft Authentication Library -->
-<script src="https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1e293b;min-height:100vh}
 
-.header{background:linear-gradient(135deg,#1a56db,#1e3a8a);color:#fff;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;box-shadow:0 2px 8px rgba(0,0,0,.25);gap:8px}
-.header h1{font-size:16px;font-weight:700;display:flex;align-items:center;gap:7px;white-space:nowrap}
-.header-btns{display:flex;gap:8px;align-items:center;flex-shrink:0}
-.hbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;white-space:nowrap}
+.header{background:linear-gradient(135deg,#1a56db,#1e3a8a);color:#fff;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.header h1{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+.hbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;transition:background .2s}
 .hbtn:hover{background:rgba(255,255,255,.28)}
-.hbtn.logged-in{background:rgba(52,211,153,.25);border-color:rgba(52,211,153,.5)}
-.hbtn.need-login{background:rgba(251,191,36,.2);border-color:rgba(251,191,36,.5);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
 
-.nav{background:#1e3a8a;padding:8px 16px 0;display:flex;gap:6px;flex-wrap:wrap;border-bottom:3px solid #1a2f72}
-.nb{padding:8px 14px 9px;border:none;border-radius:8px 8px 0 0;cursor:pointer;font-size:12px;font-weight:600;transition:all .18s;display:flex;align-items:center;gap:5px;opacity:.85;max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav{background:#1e3a8a;padding:8px 16px 0;display:flex;gap:7px;flex-wrap:wrap;border-bottom:3px solid #1a2f72}
+.nb{padding:9px 15px 10px;border:none;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;font-weight:600;transition:all .18s;display:flex;align-items:center;gap:5px;opacity:.85;max-width:155px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nb:hover{opacity:1;filter:brightness(1.08)}
 .nb.active{opacity:1;box-shadow:inset 0 -3px 0 #fff;background:rgba(255,255,255,.18)!important;color:#fff!important}
 .nb.t1{background:#fbbf24;color:#78350f}
@@ -46,7 +40,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1e293b;mi
 .empty-state h3{font-size:17px;font-weight:600;color:#64748b;margin-bottom:6px}
 .empty-state p{font-size:13px}
 
-.res-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.res-hdr{margin-bottom:10px}
 .res-count{font-size:13px;color:#64748b}
 .res-count strong{color:#1e3a8a}
 
@@ -72,12 +66,9 @@ td:first-child{font-weight:600;color:#1e3a8a}
 .loading p{color:#64748b;font-size:14px}
 
 .err-box{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:16px 18px;color:#dc2626;font-size:13px;line-height:1.7}
-.err-box code{background:#fee2e2;padding:1px 5px;border-radius:3px;font-size:12px}
-.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;color:#1e40af;font-size:13px;line-height:1.7}
 
 mark{background:#fef08a;padding:1px 2px;border-radius:2px}
 
-/* Modal */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:1000;justify-content:center;align-items:flex-start;padding:32px 16px;overflow-y:auto}
 .overlay.open{display:flex}
 .modal{background:#fff;border-radius:16px;width:100%;max-width:700px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
@@ -88,16 +79,11 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
 
 .fsec{margin-bottom:14px;background:#f8fafc;border-radius:10px;padding:14px 16px}
 .fsec-title{font-size:11px;font-weight:700;text-transform:uppercase;color:#64748b;letter-spacing:.06em;margin-bottom:11px}
-.fsec.highlight{background:#eff6ff;border:1px solid #bfdbfe}
-.fsec.highlight .fsec-title{color:#1e40af}
 .fg{margin-bottom:8px}
 .fg label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:3px}
 .fg input{width:100%;padding:7px 11px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;outline:none}
 .fg input:focus{border-color:#1e3a8a;box-shadow:0 0 0 2px rgba(30,58,138,.15)}
 .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.help-text{font-size:11px;color:#94a3b8;margin-top:4px;line-height:1.5}
-.help-text a{color:#3b82f6;text-decoration:none}
-.help-text a:hover{text-decoration:underline}
 
 .modal-foot{display:flex;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid #f1f5f9}
 .btn-save{flex:1;background:#1e3a8a;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
@@ -105,7 +91,7 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
 .btn-cancel{background:#f1f5f9;color:#374151;border:none;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer}
 .btn-cancel:hover{background:#e2e8f0}
 
-.toast{position:fixed;bottom:24px;right:24px;background:#1e3a8a;color:#fff;padding:11px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,.22);animation:fadeUp .3s ease;max-width:360px;line-height:1.5}
+.toast{position:fixed;bottom:24px;right:24px;background:#1e3a8a;color:#fff;padding:11px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,.22);animation:fadeUp .3s ease}
 @keyframes fadeUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
 
 .brand{position:fixed;bottom:10px;right:14px;font-size:11px;color:#94a3b8;font-style:italic;pointer-events:none;z-index:100}
@@ -116,17 +102,14 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
 
 <div class="header">
   <h1>🔧 Phần Mềm Tổng Hợp Sửa Chữa</h1>
-  <div class="header-btns">
-    <button class="hbtn need-login" id="btn-login" onclick="msalLogin()">🔐 Đăng nhập Microsoft</button>
-    <button class="hbtn" onclick="openSettings()">⚙ Cài đặt</button>
-  </div>
+  <button class="hbtn" onclick="openSettings()">⚙ Cài đặt</button>
 </div>
 
 <nav class="nav" id="nav"></nav>
 
 <div class="sbar" id="sbar" style="display:none">
   <input type="text" id="sinput" placeholder="Nhập từ khóa tìm kiếm..." onkeydown="if(event.key==='Enter')doSearch()">
-  <button class="btn-refresh" onclick="clearCache()" title="Tải lại dữ liệu mới">🔄</button>
+  <button class="btn-refresh" onclick="clearCache()" title="Tải lại dữ liệu mới từ sheet">🔄</button>
   <button class="btn-search" onclick="doSearch()">🔍 Tìm kiếm</button>
 </div>
 
@@ -146,23 +129,9 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
       <button class="btn-close" onclick="closeSettings()">✕</button>
     </div>
 
-    <!-- Azure AD -->
-    <div class="fsec highlight">
-      <div class="fsec-title">🔐 Đăng nhập Microsoft (cho nút 5, 6, 7 OneDrive)</div>
-      <div class="fg">
-        <label>Azure AD Client ID</label>
-        <input id="s-clientid" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-        <div class="help-text">
-          Tạo miễn phí tại <a href="https://portal.azure.com" target="_blank">portal.azure.com</a>
-          → App registrations → New registration → Copy "Application (client) ID"<br>
-          Redirect URI cần thêm: <code id="redirect-uri-hint">https://your-app.vercel.app</code>
-        </div>
-      </div>
-    </div>
-
     <!-- Nút 1 -->
     <div class="fsec">
-      <div class="fsec-title">Nút 1 — Tìm kiếm Tồn Kho (Google Sheets)</div>
+      <div class="fsec-title">🔎 Nút 1 — Tra Tồn Kho (Google Sheets · tìm cột C → B, C, J)</div>
       <div class="fg-row">
         <div class="fg"><label>Tên nút</label><input id="s-tk-name" placeholder="Tra Tồn Kho"></div>
         <div class="fg"><label>Tên Sheet</label><input id="s-tk-sheet" placeholder="tồn kho"></div>
@@ -170,9 +139,9 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
       <div class="fg"><label>Link Google Sheets</label><input id="s-tk-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
     </div>
 
-    <!-- Nút 2, 3, 4 -->
+    <!-- Nút 2 3 4 -->
     <div class="fsec">
-      <div class="fsec-title">Nút 2, 3, 4 — Scan BBKT (mở link)</div>
+      <div class="fsec-title">📋 Nút 2, 3, 4 — Scan BBKT (mở link)</div>
       <div class="fg-row">
         <div class="fg"><label>Tên nút 2</label><input id="s-b1-name" placeholder="Scan BBKT 1"></div>
         <div class="fg"><label>Link nút 2</label><input id="s-b1-url" type="url" placeholder="https://..."></div>
@@ -187,26 +156,26 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
       </div>
     </div>
 
-    <!-- Nút 5, 6, 7 -->
+    <!-- Nút 5 6 7 -->
     <div class="fsec">
-      <div class="fsec-title">Nút 5, 6, 7 — Tìm kiếm P.KTAT (OneDrive · sheet: QUAN LY BBKT · cột E → B,D,E,H,N,O)</div>
+      <div class="fsec-title">🔍 Nút 5, 6, 7 — P.KTAT (Google Sheets · sheet cố định: QUAN LY BBKT · tìm cột E → B, D, E, H, N, O)</div>
       <div class="fg-row">
         <div class="fg"><label>Tên nút 5</label><input id="s-p1-name" placeholder="P.KT AT 1"></div>
-        <div class="fg"><label>Link OneDrive nút 5</label><input id="s-p1-url" type="url" placeholder="https://...sharepoint.com/..."></div>
+        <div class="fg"><label>Link Google Sheets nút 5</label><input id="s-p1-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
       </div>
       <div class="fg-row">
         <div class="fg"><label>Tên nút 6</label><input id="s-p2-name" placeholder="P.KTAT 2"></div>
-        <div class="fg"><label>Link OneDrive nút 6</label><input id="s-p2-url" type="url" placeholder="https://...sharepoint.com/..."></div>
+        <div class="fg"><label>Link Google Sheets nút 6</label><input id="s-p2-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
       </div>
       <div class="fg-row">
         <div class="fg"><label>Tên nút 7</label><input id="s-p4-name" placeholder="P.KTAT 4"></div>
-        <div class="fg"><label>Link OneDrive nút 7</label><input id="s-p4-url" type="url" placeholder="https://...sharepoint.com/..."></div>
+        <div class="fg"><label>Link Google Sheets nút 7</label><input id="s-p4-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
       </div>
     </div>
 
     <!-- Nút dự phòng -->
     <div class="fsec">
-      <div class="fsec-title">Nút 8, 9, 10 — Dự phòng (mở link)</div>
+      <div class="fsec-title">🔗 Nút 8, 9, 10 — Dự phòng (mở link)</div>
       <div class="fg-row">
         <div class="fg"><label>Tên nút 8</label><input id="s-s1-name" placeholder="(để trống)"></div>
         <div class="fg"><label>Link nút 8</label><input id="s-s1-url" type="url" placeholder="https://..."></div>
@@ -230,7 +199,7 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
 
 <div class="toast" id="toast"></div>
 <div class="brand">A product by Thuanmv</div>
-<div class="footer">Phần Mềm Tổng Hợp Sửa Chữa · EVN</div>
+<div class="footer">Phần Mềm Tổng Hợp Sửa Chữa · EVN · Kết nối Google Sheets</div>
 
 <script>
 // ── Button config ─────────────────────────────────────────────
@@ -249,25 +218,24 @@ const BTNS = {
 const ICONS = {t1:'🔎', t2:'📋', t3:'🔍', ts:'🔗'};
 
 const DEF = {
-  clientId:'',
-  tk:{name:'Tra Tồn Kho', url:'https://docs.google.com/spreadsheets/d/1aT0ovPz7SCYCcl0LPfS7bTXUuX806FQZ/edit', sh:'tồn kho'},
-  b1:{name:'Scan BBKT 1', url:''}, b2:{name:'Scan BBKT 2', url:''}, b3:{name:'Scan BBKT 3', url:''},
-  p1:{name:'P.KT AT 1',   url:'https://cmsihn-my.sharepoint.com/:x:/g/personal/thuanmv_vinhtan4tpp_evn_com_vn/IQBbx3HQVS-DS7i9S95pYxyWAY1sTv5scdRbHZBiGJykVYM?e=ywYRcV'},
-  p2:{name:'P.KTAT 2',    url:''},
-  p4:{name:'P.KTAT 4',    url:''},
-  s1:{name:'',url:''}, s2:{name:'',url:''}, s3:{name:'',url:''}
+  tk: {name:'Tra Tồn Kho', url:'https://docs.google.com/spreadsheets/d/1aT0ovPz7SCYCcl0LPfS7bTXUuX806FQZ/edit', sh:'tồn kho'},
+  b1: {name:'Scan BBKT 1', url:''}, b2:{name:'Scan BBKT 2',url:''}, b3:{name:'Scan BBKT 3',url:''},
+  p1: {name:'P.KT AT 1',   url:'https://docs.google.com/spreadsheets/d/1Uzw-8Czr-3rxKUpJUcEt0rUyUk-SrdV-/edit'},
+  p2: {name:'P.KTAT 2',    url:'https://docs.google.com/spreadsheets/d/1QEf2cStjaD9R1tIx1tXO23HbL90Yzym_/edit'},
+  p4: {name:'P.KTAT 4',    url:''},
+  s1: {name:'',url:''}, s2:{name:'',url:''}, s3:{name:'',url:''}
 };
 
 // ── Settings ──────────────────────────────────────────────────
 function loadCfg(){
-  try{const s=localStorage.getItem('scscCfg3');return s?Object.assign({},DEF,JSON.parse(s)):{...DEF}}
+  try{const s=localStorage.getItem('scscCfg4');return s?Object.assign({},DEF,JSON.parse(s)):{...DEF}}
   catch{return{...DEF}}
 }
 function openSettings(){
   const c=loadCfg();
-  document.getElementById('s-clientid').value=c.clientId||'';
-  document.getElementById('redirect-uri-hint').textContent=window.location.origin;
-  document.getElementById('s-tk-name').value=c.tk.name; document.getElementById('s-tk-url').value=c.tk.url; document.getElementById('s-tk-sheet').value=c.tk.sh;
+  document.getElementById('s-tk-name').value=c.tk.name;
+  document.getElementById('s-tk-url').value=c.tk.url;
+  document.getElementById('s-tk-sheet').value=c.tk.sh;
   document.getElementById('s-b1-name').value=c.b1.name; document.getElementById('s-b1-url').value=c.b1.url;
   document.getElementById('s-b2-name').value=c.b2.name; document.getElementById('s-b2-url').value=c.b2.url;
   document.getElementById('s-b3-name').value=c.b3.name; document.getElementById('s-b3-url').value=c.b3.url;
@@ -283,7 +251,6 @@ function closeSettings(){document.getElementById('overlay').classList.remove('op
 function saveSettings(){
   const g=id=>document.getElementById(id).value.trim();
   const cfg={
-    clientId: g('s-clientid'),
     tk:{name:g('s-tk-name')||'Tra Tồn Kho', url:g('s-tk-url'), sh:g('s-tk-sheet')||'tồn kho'},
     b1:{name:g('s-b1-name')||'Scan BBKT 1', url:g('s-b1-url')},
     b2:{name:g('s-b2-name')||'Scan BBKT 2', url:g('s-b2-url')},
@@ -295,89 +262,11 @@ function saveSettings(){
     s2:{name:g('s-s2-name'), url:g('s-s2-url')},
     s3:{name:g('s-s3-name'), url:g('s-s3-url')}
   };
-  localStorage.setItem('scscCfg3',JSON.stringify(cfg));
+  localStorage.setItem('scscCfg4',JSON.stringify(cfg));
   cache={};
   closeSettings();
   buildNav();
-  initMSAL(cfg.clientId);
   toast('✅ Đã lưu cài đặt!');
-}
-
-// ── MSAL Authentication ───────────────────────────────────────
-let msalInstance=null;
-const SCOPES=['Files.Read','Files.Read.All'];
-
-function initMSAL(clientId){
-  if(!clientId){msalInstance=null;updateLoginBtn();return;}
-  try{
-    msalInstance=new msal.PublicClientApplication({
-      auth:{
-        clientId:clientId,
-        authority:'https://login.microsoftonline.com/organizations',
-        redirectUri:window.location.origin
-      },
-      cache:{cacheLocation:'sessionStorage',storeAuthStateInCookie:false}
-    });
-    msalInstance.initialize().then(()=>{
-      msalInstance.handleRedirectPromise().catch(()=>{});
-      updateLoginBtn();
-    });
-  }catch(e){msalInstance=null;console.warn('MSAL init error:',e);}
-}
-
-async function msalLogin(){
-  if(!msalInstance){
-    toast('⚠ Chưa có Client ID.<br>Vào ⚙ Cài đặt → điền <b>Azure AD Client ID</b> trước.');
-    return;
-  }
-  try{
-    await msalInstance.loginPopup({scopes:SCOPES});
-    updateLoginBtn();
-    cache={};
-    toast('✅ Đăng nhập thành công!');
-  }catch(e){
-    if(e.errorCode!=='user_cancelled')
-      toast('❌ Đăng nhập thất bại: '+(e.message||e.errorCode||'lỗi không xác định'));
-  }
-}
-
-async function msalLogout(){
-  if(!msalInstance)return;
-  const accs=msalInstance.getAllAccounts();
-  if(accs.length){
-    try{await msalInstance.logoutPopup({account:accs[0]});}catch{}
-  }
-  cache={};
-  updateLoginBtn();
-  toast('👋 Đã đăng xuất.');
-}
-
-async function getToken(){
-  if(!msalInstance) throw new Error('Chưa cấu hình Client ID. Vào ⚙ Cài đặt → thêm <b>Azure AD Client ID</b>.');
-  const accs=msalInstance.getAllAccounts();
-  if(!accs.length) throw new Error('Chưa đăng nhập Microsoft.<br>Nhấn nút <b>🔐 Đăng nhập Microsoft</b> phía trên.');
-  try{
-    const r=await msalInstance.acquireTokenSilent({scopes:SCOPES,account:accs[0]});
-    return r.accessToken;
-  }catch{
-    const r=await msalInstance.acquireTokenPopup({scopes:SCOPES,account:accs[0]});
-    return r.accessToken;
-  }
-}
-
-function updateLoginBtn(){
-  const btn=document.getElementById('btn-login');
-  const accs=msalInstance?msalInstance.getAllAccounts():[];
-  if(accs.length){
-    const name=accs[0].name||accs[0].username;
-    btn.innerHTML=`✅ ${name.split(' ').slice(-1)[0]} · Đăng xuất`;
-    btn.className='hbtn logged-in';
-    btn.onclick=msalLogout;
-  }else{
-    btn.innerHTML='🔐 Đăng nhập Microsoft';
-    btn.className='hbtn need-login';
-    btn.onclick=msalLogin;
-  }
 }
 
 // ── Nav ───────────────────────────────────────────────────────
@@ -386,9 +275,9 @@ function buildNav(){
   const cfg=loadCfg(), nav=document.getElementById('nav');
   nav.innerHTML='';
   Object.keys(BTNS).forEach(n=>{
-    const b=BTNS[n], entry=cfg[b.cfgKey];
-    const isEmpty=(b.cls==='ts'&&!entry.name&&!entry.url);
-    const label=isEmpty?`Dự phòng ${n-7}`:entry.name;
+    const b=BTNS[n], e=cfg[b.cfgKey];
+    const isEmpty=(b.cls==='ts'&&!e.name&&!e.url);
+    const label=isEmpty?`Dự phòng ${n-7}`:e.name;
     const btn=document.createElement('button');
     btn.className=`nb ${b.cls}${n==curBtn?' active':''}`;
     btn.id='nb'+n; btn.title=label;
@@ -402,74 +291,32 @@ function activate(n){
   document.getElementById('nb'+curBtn)?.classList.remove('active');
   curBtn=n;
   document.getElementById('nb'+n)?.classList.add('active');
-  const b=BTNS[n], cfg=loadCfg(), entry=cfg[b.cfgKey];
+  const b=BTNS[n], cfg=loadCfg(), e=cfg[b.cfgKey];
   const sbar=document.getElementById('sbar');
   if(b.type==='search'){
     sbar.style.display='flex';
     const inp=document.getElementById('sinput');
     inp.value='';
     inp.placeholder=n===1?'Nhập tên vật tư / mã để tìm kiếm...':'Nhập tên thiết bị để tìm kiếm...';
-    setContent(`<div class="empty-state"><div class="ico">🔍</div><h3>Nhập từ khóa để tìm kiếm</h3><p>Tìm kiếm trong <b>${entry.name}</b></p></div>`);
+    setContent(`<div class="empty-state"><div class="ico">🔍</div><h3>Nhập từ khóa để tìm kiếm</h3><p>Tìm kiếm trong <b>${e.name}</b></p></div>`);
     setTimeout(()=>inp.focus(),80);
   }else{
     sbar.style.display='none';
-    const url=entry.url;
-    if(url){
-      window.open(url,'_blank');
-      setContent(`<div class="link-panel"><h3>${ICONS[b.cls]} ${esc(entry.name||'Dự phòng')}</h3>
-        <a href="${esc(url)}" target="_blank">🔗 Mở ${esc(entry.name||'liên kết')}</a>
-        <div class="url-txt">${esc(url)}</div></div>`);
+    if(e.url){
+      window.open(e.url,'_blank');
+      setContent(`<div class="link-panel"><h3>${ICONS[b.cls]} ${esc(e.name||'Dự phòng')}</h3>
+        <a href="${esc(e.url)}" target="_blank">🔗 Mở ${esc(e.name||'liên kết')}</a>
+        <div class="url-txt">${esc(e.url)}</div></div>`);
     }else{
-      setContent(`<div class="link-panel"><h3>${ICONS[b.cls]} ${esc(entry.name||'Dự phòng')}</h3>
+      setContent(`<div class="link-panel"><h3>${ICONS[b.cls]} ${esc(e.name||'Dự phòng')}</h3>
         <div class="no-link">⚠ Chưa có link. Vào <strong>⚙ Cài đặt</strong> để thêm link.</div></div>`);
     }
   }
 }
 
-// ── Data fetching — { headers:string[], rows:any[][] } ────────
+// ── Google Sheets JSONP loader ────────────────────────────────
 let cache={};
-function clearCache(){cache={};toast('🔄 Đã xóa cache.')}
-
-async function fetchData(url,sheetName){
-  if(!url) throw new Error('Chưa cài đặt link. Vào ⚙ Cài đặt để thêm.');
-  if(/sharepoint\.com|onedrive\.live\.com|1drv\.ms/.test(url))
-    return await fetchOneDrive(url,sheetName);
-  const m=url.match(/\/spreadsheets\/d\/([A-Za-z0-9_-]+)/);
-  if(m) return await fetchGSheets(m[1],sheetName);
-  throw new Error('Link không được hỗ trợ. Dùng link Google Sheets hoặc OneDrive/SharePoint.');
-}
-
-async function fetchOneDrive(sharingUrl,sheetName){
-  // Lấy access token (throws nếu chưa đăng nhập)
-  const token=await getToken();
-
-  // Encode sharing URL theo chuẩn Graph API
-  const b64=btoa('u!'+sharingUrl).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
-  const apiUrl=`https://graph.microsoft.com/v1.0/shares/${b64}/driveItem/workbook/worksheets/${encodeURIComponent(sheetName)}/usedRange`;
-
-  let res;
-  try{
-    res=await fetch(apiUrl,{headers:{Accept:'application/json','Authorization':'Bearer '+token}});
-  }catch(e){
-    throw new Error('Không kết nối được Microsoft Graph API. Kiểm tra mạng.');
-  }
-
-  if(!res.ok){
-    let detail='';
-    try{const b=await res.json();detail=b.error?.message||'';}catch{}
-    if(res.status===404)
-      throw new Error(`Không tìm thấy sheet <b>"${sheetName}"</b> trong file Excel.<br>Kiểm tra lại tên sheet (phân biệt hoa/thường, khoảng trắng).`);
-    throw new Error(`Lỗi ${res.status}: ${detail||'Không tải được dữ liệu từ OneDrive'}`);
-  }
-
-  const data=await res.json();
-  const values=data.values||[];
-  if(!values.length) throw new Error('Sheet trống hoặc không có dữ liệu.');
-  return{
-    headers:values[0].map(h=>h!=null?String(h):''),
-    rows:values.slice(1)
-  };
-}
+function clearCache(){cache={};toast('🔄 Đã xóa cache — lần tìm tiếp tải dữ liệu mới.')}
 
 function fetchGSheets(sheetId,sheetName){
   return new Promise((resolve,reject)=>{
@@ -479,8 +326,10 @@ function fetchGSheets(sheetId,sheetName){
     const tmr=setTimeout(()=>{if(!done){done=true;cleanup();reject(new Error('Hết thời gian chờ (20s).'))}},20000);
     window[cb]=(res)=>{
       if(done)return;done=true;clearTimeout(tmr);cleanup();
-      if(res.status!=='ok'){reject(new Error((res.errors||[]).map(e=>e.detailed_message||e.message).join('; ')||'Lỗi'));return;}
-      const t=res.table,n=(t.cols||[]).length;
+      if(res.status!=='ok'){
+        reject(new Error((res.errors||[]).map(e=>e.detailed_message||e.message).join('; ')||'Lỗi'));return;
+      }
+      const t=res.table, n=(t.cols||[]).length;
       resolve({
         headers:(t.cols||[]).map(c=>c.label||c.id||''),
         rows:(t.rows||[]).map(row=>
@@ -494,7 +343,7 @@ function fetchGSheets(sheetId,sheetName){
     const sc=document.createElement('script');sc.id=cb;
     sc.src=`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json;responseHandler:${cb}&sheet=${encodeURIComponent(sheetName)}&headers=1`;
     sc.onerror=()=>{if(!done){done=true;clearTimeout(tmr);cleanup();
-      reject(new Error('Không kết nối Google Sheets. Sheet cần chia sẻ "Bất kỳ ai có đường liên kết".'))}};
+      reject(new Error('Không kết nối được Google Sheets.<br>Sheet cần được chia sẻ <b>"Bất kỳ ai có đường liên kết"</b>.'))}};
     document.head.appendChild(sc);
   });
 }
@@ -505,14 +354,17 @@ async function doSearch(){
   if(!term){toast('⚠ Vui lòng nhập từ khóa tìm kiếm');return;}
   const b=BTNS[curBtn];
   if(b.type!=='search')return;
-  const cfg=loadCfg(),entry=cfg[b.cfgKey];
-  const shName=b.sh||entry.sh||'Sheet1';
+  const cfg=loadCfg(), e=cfg[b.cfgKey];
+  if(!e.url){setContent('<div class="err-box">⚠ Chưa cài đặt link Google Sheets. Vào ⚙ Cài đặt để thêm.</div>');return;}
+  const m=e.url.match(/\/spreadsheets\/d\/([A-Za-z0-9_-]+)/);
+  if(!m){setContent('<div class="err-box">⚠ Link Google Sheets không hợp lệ.</div>');return;}
+  const shName=b.sh||e.sh||'Sheet1';
   const cKey=b.cfgKey+'|'+shName;
   let data=cache[cKey];
   if(!data){
-    setContent('<div class="loading"><div class="spinner"></div><p>Đang tải dữ liệu...</p></div>');
-    try{data=await fetchData(entry.url,shName);cache[cKey]=data;}
-    catch(e){setContent(`<div class="err-box">❌ ${e.message}</div>`);return;}
+    setContent('<div class="loading"><div class="spinner"></div><p>Đang tải dữ liệu từ Google Sheets...</p></div>');
+    try{data=await fetchGSheets(m[1],shName);cache[cKey]=data;}
+    catch(err){setContent(`<div class="err-box">❌ ${err.message}</div>`);return;}
   }
   const termLow=term.toLowerCase();
   const results=data.rows.filter(row=>{
@@ -543,12 +395,9 @@ function colLetter(i){return'Cột '+String.fromCharCode(65+i)}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function hilite(e,t){if(!t)return e;const r=t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return e.replace(new RegExp('('+r+')','gi'),'<mark>$1</mark>')}
 let toastTmr;
-function toast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.style.display='block';clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.style.display='none',4000)}
+function toast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.style.display='block';clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.style.display='none',3500)}
 
-// ── Init ──────────────────────────────────────────────────────
-const cfg0=loadCfg();
 buildNav();
-initMSAL(cfg0.clientId);
 </script>
 </body>
 </html>
