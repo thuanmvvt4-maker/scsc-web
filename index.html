@@ -208,9 +208,9 @@ const BTNS = {
   2:  {type:'link',   cfgKey:'b1', cls:'t2'},
   3:  {type:'link',   cfgKey:'b2', cls:'t2'},
   4:  {type:'link',   cfgKey:'b3', cls:'t2'},
-  5:  {type:'search', cfgKey:'p1', cls:'t3', sCol:4, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT'},
-  6:  {type:'search', cfgKey:'p2', cls:'t3', sCol:4, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT'},
-  7:  {type:'search', cfgKey:'p4', cls:'t3', sCol:4, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT'},
+  5:  {type:'search', cfgKey:'p1', cls:'t3', sCol:4, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT', labels:['Số PCT BBNT','Số PCT BBKT','Nội dung','KTV','Số PYCVT','Số PXK']},
+  6:  {type:'search', cfgKey:'p2', cls:'t3', sCol:4, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT', labels:['Số PCT BBNT','Số PCT BBKT','Nội dung','KTV','Số PYCVT','Số PXK']},
+  7:  {type:'search', cfgKey:'p4', cls:'t3', sCol:4, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT', labels:['Số PCT BBNT','Số PCT BBKT','Nội dung','KTV','Số PYCVT','Số PXK']},
   8:  {type:'link',   cfgKey:'s1', cls:'ts'},
   9:  {type:'link',   cfgKey:'s2', cls:'ts'},
   10: {type:'link',   cfgKey:'s3', cls:'ts'}
@@ -371,7 +371,7 @@ async function doSearch(){
     const v=row[b.sCol]!=null?String(row[b.sCol]):'';
     return v.toLowerCase().includes(termLow);
   });
-  const headers=b.rCols.map(i=>data.headers[i]||colLetter(i));
+  const headers=b.labels||b.rCols.map(i=>data.headers[i]||colLetter(i));
   renderResults(results,b.rCols,headers,term);
 }
 
