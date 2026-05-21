@@ -159,18 +159,18 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
 
     <!-- Nút 5, 6, 7: P.KTAT OneDrive -->
     <div class="fsec">
-      <div class="fsec-title">Nút 5, 6, 7 — P.KTAT (mở link OneDrive)</div>
+      <div class="fsec-title">Nút 5, 6, 7 — Tìm kiếm P.KTAT (sheet: QUAN LY BBKT · tìm cột E → B,D,E,H,N,O)</div>
       <div class="fg-row">
         <div class="fg"><label>Tên nút 5</label><input id="s-p1-name" placeholder="P.KT AT 1"></div>
-        <div class="fg"><label>Link nút 5</label><input id="s-p1-url" type="url" placeholder="https://...sharepoint.com/..."></div>
+        <div class="fg"><label>Link Google Sheets nút 5</label><input id="s-p1-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
       </div>
       <div class="fg-row">
         <div class="fg"><label>Tên nút 6</label><input id="s-p2-name" placeholder="P.KTAT 2"></div>
-        <div class="fg"><label>Link nút 6</label><input id="s-p2-url" type="url" placeholder="https://...sharepoint.com/..."></div>
+        <div class="fg"><label>Link Google Sheets nút 6</label><input id="s-p2-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
       </div>
       <div class="fg-row">
         <div class="fg"><label>Tên nút 7</label><input id="s-p4-name" placeholder="P.KTAT 4"></div>
-        <div class="fg"><label>Link nút 7</label><input id="s-p4-url" type="url" placeholder="https://...sharepoint.com/..."></div>
+        <div class="fg"><label>Link Google Sheets nút 7</label><input id="s-p4-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
       </div>
     </div>
 
@@ -209,7 +209,7 @@ const DEF = {
   b1: {name:'Scan BBKT 1',  url:''},
   b2: {name:'Scan BBKT 2',  url:''},
   b3: {name:'Scan BBKT 3',  url:''},
-  p1: {name:'P.KT AT 1',    url:'https://cmsihn-my.sharepoint.com/:x:/g/personal/thuanmv_vinhtan4tpp_evn_com_vn/IQBbx3HQVS-DS7i9S95pYxyWAY1sTv5scdRbHZBiGJykVYM?e=Rnd6n0'},
+  p1: {name:'P.KT AT 1',    url:''},
   p2: {name:'P.KTAT 2',     url:''},
   p4: {name:'P.KTAT 4',     url:''},
   s1: {name:'', url:''},
@@ -223,16 +223,16 @@ const BTNS = {
   2:  {type:'link',   cfgKey:'b1', cls:'t2'},
   3:  {type:'link',   cfgKey:'b2', cls:'t2'},
   4:  {type:'link',   cfgKey:'b3', cls:'t2'},
-  5:  {type:'link', cfgKey:'p1', cls:'t3'},
-  6:  {type:'link', cfgKey:'p2', cls:'t3'},
-  7:  {type:'link', cfgKey:'p4', cls:'t3'},
+  5:  {type:'search', cfgKey:'p1', cls:'t3', sCol:4, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT'},
+  6:  {type:'search', cfgKey:'p2', cls:'t3', sCol:4, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT'},
+  7:  {type:'search', cfgKey:'p4', cls:'t3', sCol:4, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT'},
   8:  {type:'link',   cfgKey:'s1', cls:'ts'},
   9:  {type:'link',   cfgKey:'s2', cls:'ts'},
   10: {type:'link',   cfgKey:'s3', cls:'ts'}
 };
 
 // Icons per type
-const ICONS = {t1:'🔎', t2:'📋', t3:'📂', ts:'🔗'};
+const ICONS = {t1:'🔎', t2:'📋', t3:'🔍', ts:'🔗'};
 
 // ── Settings I/O ─────────────────────────────────────────────
 function loadCfg(){
@@ -366,11 +366,12 @@ async function doSearch(){
   const cfg=loadCfg(),entry=cfg[b.cfgKey];
   const sheetId=getSheetId(entry.url);
   if(!sheetId){setContent('<div class="err-box">⚠ Chưa cài đặt link Google Sheets cho nút này. Vui lòng vào ⚙ Cài đặt.</div>');return;}
-  const cKey=b.cfgKey+'|'+(entry.sh||'');
+  const shName=b.sh||entry.sh||'Sheet1';
+  const cKey=b.cfgKey+'|'+shName;
   let table=cache[cKey];
   if(!table){
     setContent('<div class="loading"><div class="spinner"></div><p>Đang tải dữ liệu từ Google Sheets...</p></div>');
-    try{table=await loadSheet(sheetId,entry.sh);cache[cKey]=table;}
+    try{table=await loadSheet(sheetId,shName);cache[cKey]=table;}
     catch(e){setContent(`<div class="err-box">❌ ${e.message}</div>`);return;}
   }
   const cols=table.cols||[];
