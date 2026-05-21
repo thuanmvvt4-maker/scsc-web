@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phần Mềm Tổng Hợp Sửa Chữa</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1e293b;min-height:100vh}
+
+.header{background:linear-gradient(135deg,#1a56db,#1e3a8a);color:#fff;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.header h1{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+.btn-cfg{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;transition:background .2s}
+.btn-cfg:hover{background:rgba(255,255,255,.28)}
+
+.nav{background:#1e3a8a;padding:8px 16px 0;display:flex;gap:8px;flex-wrap:wrap;border-bottom:3px solid #1a2f72}
+.nb{padding:9px 16px 10px;border:none;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;font-weight:600;transition:all .18s;display:flex;align-items:center;gap:6px;opacity:.85;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nb:hover{opacity:1;filter:brightness(1.08)}
+.nb.active{opacity:1;box-shadow:inset 0 -3px 0 #fff;background:rgba(255,255,255,.18)!important;color:#fff!important}
+.nb.t1{background:#fbbf24;color:#78350f}
+.nb.t2{background:#34d399;color:#064e3b}
+.nb.t3{background:#c084fc;color:#3b0764}
+.nb.ts{background:#94a3b8;color:#fff;opacity:.6}
+.nb.ts:hover{opacity:.85}
+.nb.ts.active{opacity:1}
+
+.sbar{background:#1e3a8a;padding:10px 16px 14px;display:flex;gap:10px}
+.sbar input{flex:1;padding:10px 16px;border:none;border-radius:8px;font-size:14px;outline:none;background:rgba(255,255,255,.92)}
+.sbar input:focus{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.4)}
+.sbar input::placeholder{color:#94a3b8}
+.btn-search{padding:10px 26px;background:#f97316;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s}
+.btn-search:hover{background:#ea580c}
+.btn-refresh{padding:10px 14px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;font-size:13px;cursor:pointer;white-space:nowrap;transition:background .2s;title:'Tải lại dữ liệu mới'}
+.btn-refresh:hover{background:rgba(255,255,255,.28)}
+
+.content{padding:20px;max-width:1300px;margin:0 auto}
+
+.empty-state{text-align:center;padding:80px 20px;color:#94a3b8}
+.empty-state .ico{font-size:60px;margin-bottom:14px}
+.empty-state h3{font-size:17px;font-weight:600;color:#64748b;margin-bottom:6px}
+.empty-state p{font-size:13px}
+
+.res-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.res-count{font-size:13px;color:#64748b}
+.res-count strong{color:#1e3a8a}
+
+.tbl-wrap{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:#1e3a8a;color:#fff;padding:11px 14px;text-align:left;font-weight:600;white-space:nowrap}
+tbody tr{border-bottom:1px solid #f1f5f9}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#eff6ff}
+td{padding:11px 14px;vertical-align:top;max-width:320px;word-break:break-word}
+td:first-child{font-weight:600;color:#1e3a8a}
+
+.link-panel{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:28px;text-align:center}
+.link-panel h3{font-size:17px;color:#1e3a8a;margin-bottom:18px}
+.link-panel a{display:inline-flex;align-items:center;gap:8px;background:#1e3a8a;color:#fff;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:600;font-size:14px;transition:background .2s}
+.link-panel a:hover{background:#1d4ed8}
+.link-panel .url-txt{margin-top:12px;word-break:break-all;font-size:11px;color:#94a3b8}
+.link-panel .no-link{color:#94a3b8;font-size:14px;margin-top:8px}
+
+.loading{text-align:center;padding:48px}
+.spinner{display:inline-block;width:34px;height:34px;border:3px solid #e2e8f0;border-top-color:#1e3a8a;border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:#64748b;font-size:14px}
+
+.err-box{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:16px 18px;color:#dc2626;font-size:13px;line-height:1.6}
+
+mark{background:#fef08a;padding:1px 2px;border-radius:2px}
+
+/* Modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:1000;justify-content:center;align-items:flex-start;padding:32px 16px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:680px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid #f1f5f9}
+.modal-hdr h2{font-size:17px;color:#1e3a8a;font-weight:700}
+.btn-close{width:30px;height:30px;background:#f1f5f9;border:none;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
+.btn-close:hover{background:#e2e8f0}
+
+.fsec{margin-bottom:16px;background:#f8fafc;border-radius:10px;padding:14px 16px}
+.fsec-title{font-size:11px;font-weight:700;text-transform:uppercase;color:#64748b;letter-spacing:.06em;margin-bottom:12px}
+.fg{margin-bottom:10px}
+.fg label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:3px}
+.fg input{width:100%;padding:7px 11px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;outline:none}
+.fg input:focus{border-color:#1e3a8a;box-shadow:0 0 0 2px rgba(30,58,138,.15)}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+.modal-foot{display:flex;gap:10px;margin-top:20px;padding-top:14px;border-top:1px solid #f1f5f9}
+.btn-save{flex:1;background:#1e3a8a;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
+.btn-save:hover{background:#1d4ed8}
+.btn-cancel{background:#f1f5f9;color:#374151;border:none;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer}
+.btn-cancel:hover{background:#e2e8f0}
+
+.toast{position:fixed;bottom:24px;right:24px;background:#1e3a8a;color:#fff;padding:11px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,.22);animation:fadeUp .3s ease}
+@keyframes fadeUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.brand{position:fixed;bottom:10px;right:14px;font-size:11px;color:#94a3b8;font-style:italic;pointer-events:none;z-index:100}
+.footer{text-align:center;padding:12px;font-size:11px;color:#94a3b8;margin-top:8px;padding-bottom:28px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔧 Phần Mềm Tổng Hợp Sửa Chữa</h1>
+  <button class="btn-cfg" onclick="openSettings()">⚙ Cài đặt</button>
+</div>
+
+<nav class="nav" id="nav"></nav>
+
+<div class="sbar" id="sbar" style="display:none">
+  <input type="text" id="sinput" placeholder="Nhập từ khóa tìm kiếm..." onkeydown="if(event.key==='Enter')doSearch()">
+  <button class="btn-refresh" onclick="clearCache()" title="Tải lại dữ liệu mới">🔄</button>
+  <button class="btn-search" onclick="doSearch()">🔍 Tìm kiếm</button>
+</div>
+
+<div class="content" id="content">
+  <div class="empty-state">
+    <div class="ico">🔧</div>
+    <h3>Phần Mềm Tổng Hợp Sửa Chữa</h3>
+    <p>Chọn một chức năng ở thanh menu phía trên để bắt đầu</p>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2>⚙ Cài đặt</h2>
+      <button class="btn-close" onclick="closeSettings()">✕</button>
+    </div>
+
+    <!-- Nút 1: Tồn Kho -->
+    <div class="fsec">
+      <div class="fsec-title">Nút 1 — Tìm kiếm Tồn Kho (Google Sheets)</div>
+      <div class="fg-row">
+        <div class="fg"><label>Tên nút</label><input id="s-tk-name" placeholder="Tra Tồn Kho"></div>
+        <div class="fg"><label>Tên Sheet</label><input id="s-tk-sheet" placeholder="tồn kho"></div>
+      </div>
+      <div class="fg"><label>Link Google Sheets</label><input id="s-tk-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
+    </div>
+
+    <!-- Nút 2, 3, 4: BBKT -->
+    <div class="fsec">
+      <div class="fsec-title">Nút 2, 3, 4 — Scan BBKT (mở link)</div>
+      <div class="fg-row">
+        <div class="fg"><label>Tên nút 2</label><input id="s-b1-name" placeholder="Scan BBKT 1"></div>
+        <div class="fg"><label>Link nút 2</label><input id="s-b1-url" type="url" placeholder="https://..."></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Tên nút 3</label><input id="s-b2-name" placeholder="Scan BBKT 2"></div>
+        <div class="fg"><label>Link nút 3</label><input id="s-b2-url" type="url" placeholder="https://..."></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Tên nút 4</label><input id="s-b3-name" placeholder="Scan BBKT 3"></div>
+        <div class="fg"><label>Link nút 4</label><input id="s-b3-url" type="url" placeholder="https://..."></div>
+      </div>
+    </div>
+
+    <!-- Nút 5, 6, 7: P.KTAT -->
+    <div class="fsec">
+      <div class="fsec-title">Nút 5, 6, 7 — Tìm kiếm P.KTAT (Google Sheets · sheet: QUAN LY BBKT)</div>
+      <div class="fg-row">
+        <div class="fg"><label>Tên nút 5</label><input id="s-p1-name" placeholder="P.KT AT 1"></div>
+        <div class="fg"><label>Tên Sheet nút 5</label><input id="s-p1-sh" placeholder="QUAN LY BBKT"></div>
+      </div>
+      <div class="fg"><label>Link Google Sheets nút 5</label><input id="s-p1-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
+      <div class="fg-row" style="margin-top:10px">
+        <div class="fg"><label>Tên nút 6</label><input id="s-p2-name" placeholder="P.KTAT 2"></div>
+        <div class="fg"><label>Tên Sheet nút 6</label><input id="s-p2-sh" placeholder="QUAN LY BBKT"></div>
+      </div>
+      <div class="fg"><label>Link Google Sheets nút 6</label><input id="s-p2-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
+      <div class="fg-row" style="margin-top:10px">
+        <div class="fg"><label>Tên nút 7</label><input id="s-p4-name" placeholder="P.KTAT 4"></div>
+        <div class="fg"><label>Tên Sheet nút 7</label><input id="s-p4-sh" placeholder="QUAN LY BBKT"></div>
+      </div>
+      <div class="fg"><label>Link Google Sheets nút 7</label><input id="s-p4-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
+    </div>
+
+    <!-- Nút dự phòng 8, 9, 10 -->
+    <div class="fsec">
+      <div class="fsec-title">Nút 8, 9, 10 — Dự phòng (mở link)</div>
+      <div class="fg-row">
+        <div class="fg"><label>Tên nút 8</label><input id="s-s1-name" placeholder="(để trống)"></div>
+        <div class="fg"><label>Link nút 8</label><input id="s-s1-url" type="url" placeholder="https://..."></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Tên nút 9</label><input id="s-s2-name" placeholder="(để trống)"></div>
+        <div class="fg"><label>Link nút 9</label><input id="s-s2-url" type="url" placeholder="https://..."></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Tên nút 10</label><input id="s-s3-name" placeholder="(để trống)"></div>
+        <div class="fg"><label>Link nút 10</label><input id="s-s3-url" type="url" placeholder="https://..."></div>
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeSettings()">Hủy</button>
+      <button class="btn-save" onclick="saveSettings()">💾 Lưu cài đặt</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="brand">A product by Thuanmv</div>
+<div class="footer">Phần Mềm Tổng Hợp Sửa Chữa · EVN · Kết nối Google Sheets</div>
+
+<script>
+// ── Default settings ─────────────────────────────────────────
+const DEF = {
+  tk: {name:'Tra Tồn Kho',  url:'https://docs.google.com/spreadsheets/d/1aT0ovPz7SCYCcl0LPfS7bTXUuX806FQZ/edit', sh:'tồn kho'},
+  b1: {name:'Scan BBKT 1',  url:''},
+  b2: {name:'Scan BBKT 2',  url:''},
+  b3: {name:'Scan BBKT 3',  url:''},
+  p1: {name:'P.KT AT 1',    url:'https://docs.google.com/spreadsheets/d/1Uzw-8Czr-3rxKUpJUcEt0rUyUk-SrdV-/edit', sh:'QUAN LY BBKT'},
+  p2: {name:'P.KTAT 2',     url:'https://docs.google.com/spreadsheets/d/1QEf2cStjaD9R1tIx1tXO23HbL90Yzym_/edit', sh:'QUAN LY BBKT'},
+  p4: {name:'P.KTAT 4',     url:'', sh:'QUAN LY BBKT'},
+  s1: {name:'', url:''},
+  s2: {name:'', url:''},
+  s3: {name:'', url:''}
+};
+
+// Button definitions (type fixed, name from settings)
+const BTNS = {
+  1:  {type:'search', cfgKey:'tk', cls:'t1', sCol:2, rCols:[1,2,9]},
+  2:  {type:'link',   cfgKey:'b1', cls:'t2'},
+  3:  {type:'link',   cfgKey:'b2', cls:'t2'},
+  4:  {type:'link',   cfgKey:'b3', cls:'t2'},
+  5:  {type:'search', cfgKey:'p1', cls:'t3', sCol:4, rCols:[1,3,4,13,14,7]},
+  6:  {type:'search', cfgKey:'p2', cls:'t3', sCol:4, rCols:[1,3,4,13,14,7]},
+  7:  {type:'search', cfgKey:'p4', cls:'t3', sCol:4, rCols:[1,3,4,13,14,7]},
+  8:  {type:'link',   cfgKey:'s1', cls:'ts'},
+  9:  {type:'link',   cfgKey:'s2', cls:'ts'},
+  10: {type:'link',   cfgKey:'s3', cls:'ts'}
+};
+
+// Icons per type
+const ICONS = {t1:'🔎', t2:'📋', t3:'🔍', ts:'🔗'};
+
+// ── Settings I/O ─────────────────────────────────────────────
+function loadCfg(){
+  try{const s=localStorage.getItem('scscCfg2');return s?Object.assign({},DEF,JSON.parse(s)):{...DEF}}
+  catch{return{...DEF}}
+}
+function openSettings(){
+  const c=loadCfg();
+  const g=(k,f)=>document.getElementById(k).value=(c[f.split('.')[0]]||{})[f.split('.')[1]]||'';
+  document.getElementById('s-tk-name').value=c.tk.name;document.getElementById('s-tk-url').value=c.tk.url;document.getElementById('s-tk-sheet').value=c.tk.sh;
+  document.getElementById('s-b1-name').value=c.b1.name;document.getElementById('s-b1-url').value=c.b1.url;
+  document.getElementById('s-b2-name').value=c.b2.name;document.getElementById('s-b2-url').value=c.b2.url;
+  document.getElementById('s-b3-name').value=c.b3.name;document.getElementById('s-b3-url').value=c.b3.url;
+  document.getElementById('s-p1-name').value=c.p1.name;document.getElementById('s-p1-url').value=c.p1.url;document.getElementById('s-p1-sh').value=c.p1.sh;
+  document.getElementById('s-p2-name').value=c.p2.name;document.getElementById('s-p2-url').value=c.p2.url;document.getElementById('s-p2-sh').value=c.p2.sh;
+  document.getElementById('s-p4-name').value=c.p4.name;document.getElementById('s-p4-url').value=c.p4.url;document.getElementById('s-p4-sh').value=c.p4.sh;
+  document.getElementById('s-s1-name').value=c.s1.name;document.getElementById('s-s1-url').value=c.s1.url;
+  document.getElementById('s-s2-name').value=c.s2.name;document.getElementById('s-s2-url').value=c.s2.url;
+  document.getElementById('s-s3-name').value=c.s3.name;document.getElementById('s-s3-url').value=c.s3.url;
+  document.getElementById('overlay').classList.add('open');
+}
+function closeSettings(){document.getElementById('overlay').classList.remove('open')}
+function saveSettings(){
+  const g=id=>document.getElementById(id).value.trim();
+  const cfg={
+    tk:{name:g('s-tk-name')||'Tra Tồn Kho', url:g('s-tk-url'), sh:g('s-tk-sheet')||'tồn kho'},
+    b1:{name:g('s-b1-name')||'Scan BBKT 1', url:g('s-b1-url')},
+    b2:{name:g('s-b2-name')||'Scan BBKT 2', url:g('s-b2-url')},
+    b3:{name:g('s-b3-name')||'Scan BBKT 3', url:g('s-b3-url')},
+    p1:{name:g('s-p1-name')||'P.KT AT 1',   url:g('s-p1-url'), sh:g('s-p1-sh')||'QUAN LY BBKT'},
+    p2:{name:g('s-p2-name')||'P.KTAT 2',    url:g('s-p2-url'), sh:g('s-p2-sh')||'QUAN LY BBKT'},
+    p4:{name:g('s-p4-name')||'P.KTAT 4',    url:g('s-p4-url'), sh:g('s-p4-sh')||'QUAN LY BBKT'},
+    s1:{name:g('s-s1-name'), url:g('s-s1-url')},
+    s2:{name:g('s-s2-name'), url:g('s-s2-url')},
+    s3:{name:g('s-s3-name'), url:g('s-s3-url')}
+  };
+  localStorage.setItem('scscCfg2',JSON.stringify(cfg));
+  cache={};
+  closeSettings();
+  buildNav();
+  toast('✅ Đã lưu cài đặt!');
+}
+
+// ── Nav builder ───────────────────────────────────────────────
+let curBtn=1;
+
+function buildNav(){
+  const cfg=loadCfg();
+  const nav=document.getElementById('nav');
+  nav.innerHTML='';
+  Object.keys(BTNS).forEach(n=>{
+    const b=BTNS[n], entry=cfg[b.cfgKey];
+    const name=entry.name||'';
+    const icon=ICONS[b.cls];
+    const isEmpty=(b.cls==='ts'&&!name&&!entry.url);
+    const label=isEmpty?`Dự phòng ${n-7}`:name;
+    const btn=document.createElement('button');
+    btn.className=`nb ${b.cls}${n==curBtn?' active':''}${isEmpty?' ts':''}`;
+    btn.id='nb'+n;
+    btn.title=label;
+    btn.innerHTML=`${icon} ${label}`;
+    btn.onclick=()=>activate(parseInt(n));
+    nav.appendChild(btn);
+  });
+}
+
+function activate(n){
+  const prev=document.getElementById('nb'+curBtn);
+  if(prev)prev.classList.remove('active');
+  curBtn=n;
+  const btn=document.getElementById('nb'+n);
+  if(btn)btn.classList.add('active');
+  const b=BTNS[n], cfg=loadCfg(), entry=cfg[b.cfgKey];
+  const sbar=document.getElementById('sbar');
+
+  if(b.type==='search'){
+    sbar.style.display='flex';
+    const inp=document.getElementById('sinput');
+    inp.value='';
+    inp.placeholder=n===1?'Nhập tên vật tư / mã để tìm kiếm...':'Nhập tên thiết bị để tìm kiếm...';
+    setContent(`<div class="empty-state"><div class="ico">🔍</div><h3>Nhập từ khóa để tìm kiếm</h3><p>Tìm kiếm trong <b>${entry.name}</b></p></div>`);
+    setTimeout(()=>inp.focus(),80);
+  } else {
+    sbar.style.display='none';
+    const url=entry.url;
+    if(url){
+      window.open(url,'_blank');
+      setContent(`<div class="link-panel"><h3>${ICONS[b.cls]} ${esc(entry.name||'Dự phòng')}</h3>
+        <a href="${esc(url)}" target="_blank">🔗 Mở ${esc(entry.name||'liên kết')}</a>
+        <div class="url-txt">${esc(url)}</div></div>`);
+    } else {
+      setContent(`<div class="link-panel"><h3>${ICONS[b.cls]} ${esc(entry.name||'Dự phòng')}</h3>
+        <div class="no-link">⚠ Chưa có link. Vào <strong>⚙ Cài đặt</strong> để thêm link cho nút này.</div></div>`);
+    }
+  }
+}
+
+// ── Google Sheets JSONP loader ────────────────────────────────
+let cache={};
+function clearCache(){cache={};toast('🔄 Đã xóa cache — lần tìm tiếp sẽ tải dữ liệu mới từ sheet.')}
+
+function getSheetId(url){
+  const m=(url||'').match(/\/spreadsheets\/d\/([A-Za-z0-9_-]+)/);
+  return m?m[1]:null;
+}
+
+function loadSheet(sheetId,sheetName){
+  return new Promise((resolve,reject)=>{
+    const cb='_gviz'+Date.now().toString(36)+Math.random().toString(36).slice(2);
+    let done=false;
+    const cleanup=()=>{delete window[cb];const s=document.getElementById(cb);if(s)s.remove()};
+    const tmr=setTimeout(()=>{if(!done){done=true;cleanup();reject(new Error('Hết thời gian chờ (20s). Kiểm tra kết nối mạng hoặc link sheet.'))}},20000);
+    window[cb]=(res)=>{
+      if(done)return;done=true;clearTimeout(tmr);cleanup();
+      if(res.status==='ok')resolve(res.table);
+      else reject(new Error((res.errors||[]).map(e=>e.detailed_message||e.message).join('; ')||'Google Sheets trả về lỗi'));
+    };
+    const sc=document.createElement('script');sc.id=cb;
+    sc.src=`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json;responseHandler:${cb}&sheet=${encodeURIComponent(sheetName)}&headers=1`;
+    sc.onerror=()=>{if(!done){done=true;clearTimeout(tmr);cleanup();reject(new Error('Không kết nối được Google Sheets.<br>Sheet cần được chia sẻ ở chế độ <b>"Bất kỳ ai có đường liên kết"</b>.'))}};
+    document.head.appendChild(sc);
+  });
+}
+
+// ── Search ────────────────────────────────────────────────────
+async function doSearch(){
+  const term=document.getElementById('sinput').value.trim();
+  if(!term){toast('⚠ Vui lòng nhập từ khóa tìm kiếm');return;}
+  const b=BTNS[curBtn];
+  if(b.type!=='search')return;
+  const cfg=loadCfg(),entry=cfg[b.cfgKey];
+  const sheetId=getSheetId(entry.url);
+  if(!sheetId){setContent('<div class="err-box">⚠ Chưa cài đặt link Google Sheets cho nút này. Vui lòng vào ⚙ Cài đặt.</div>');return;}
+  const cKey=b.cfgKey+'|'+(entry.sh||'');
+  let table=cache[cKey];
+  if(!table){
+    setContent('<div class="loading"><div class="spinner"></div><p>Đang tải dữ liệu từ Google Sheets...</p></div>');
+    try{table=await loadSheet(sheetId,entry.sh);cache[cKey]=table;}
+    catch(e){setContent(`<div class="err-box">❌ ${e.message}</div>`);return;}
+  }
+  const cols=table.cols||[];
+  const headers=b.rCols.map(i=>{const c=cols[i];return c?(c.label||c.id||colLetter(i)):colLetter(i)});
+  const termLow=term.toLowerCase();
+  const results=(table.rows||[]).filter(row=>{
+    const cell=row.c&&row.c[b.sCol];
+    if(!cell)return false;
+    const v=cell.f!=null?cell.f:String(cell.v??'');
+    return v.toLowerCase().includes(termLow);
+  });
+  renderResults(results,b.rCols,headers,term);
+}
+
+function renderResults(rows,rCols,headers,term){
+  if(!rows.length){
+    setContent(`<div class="empty-state"><div class="ico">📭</div><h3>Không tìm thấy kết quả</h3><p>Không có dữ liệu khớp với "<b>${esc(term)}</b>"</p></div>`);return;
+  }
+  let h=`<div class="res-hdr"><div class="res-count">Tìm thấy <strong>${rows.length}</strong> kết quả cho "<strong>${esc(term)}</strong>"</div></div>
+<div class="tbl-wrap"><table><thead><tr>${headers.map(x=>`<th>${esc(x||'—')}</th>`).join('')}</tr></thead><tbody>`;
+  rows.forEach(row=>{
+    h+='<tr>';
+    rCols.forEach(ci=>{
+      const cell=row.c&&row.c[ci];let v='';
+      if(cell&&cell!==null)v=cell.f!=null?cell.f:String(cell.v??'');
+      h+=`<td>${hilite(esc(v),term)}</td>`;
+    });
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';setContent(h);
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function setContent(html){document.getElementById('content').innerHTML=html}
+function colLetter(i){return'Cột '+String.fromCharCode(65+i)}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function hilite(escaped,term){if(!term)return escaped;const e=term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return escaped.replace(new RegExp('('+e+')','gi'),'<mark>$1</mark>')}
+let toastTmr;
+function toast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.style.display='block';clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.style.display='none',3000)}
+
+// Init
+buildNav();
+</script>
+</body>
+</html>
