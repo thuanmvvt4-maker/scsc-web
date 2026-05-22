@@ -229,14 +229,14 @@ const DEF = {
 // ── Settings ──────────────────────────────────────────────────
 let _remoteCfg=null;
 async function fetchRemoteCfg(){
-  try{
-    const r=await fetch('config.json?_='+Date.now());
-    if(r.ok){_remoteCfg=await r.json();localStorage.removeItem('scscCfg4');}
-  }catch{}
+  try{const r=await fetch('config.json?_='+Date.now());if(r.ok)_remoteCfg=await r.json();}
+  catch{}
 }
 function loadCfg(){
-  // config.json luôn là nguồn chính, localStorage đã bị xóa khi fetch thành công
-  return Object.assign({},DEF,_remoteCfg||{});
+  // Thứ tự ưu tiên: DEF < config.json < localStorage (cài đặt tay)
+  const base=Object.assign({},DEF,_remoteCfg||{});
+  try{const s=localStorage.getItem('scscCfg4');return s?Object.assign({},base,JSON.parse(s)):base;}
+  catch{return base;}
 }
 function openSettings(){
   const c=loadCfg();
@@ -269,9 +269,11 @@ function saveSettings(){
     s2:{name:g('s-s2-name'), url:g('s-s2-url')},
     s3:{name:g('s-s3-name'), url:g('s-s3-url')}
   };
+  localStorage.setItem('scscCfg4',JSON.stringify(cfg));
   cache={};
   closeSettings();
-  toast('ℹ️ Để thay đổi link vĩnh viễn, chỉnh file config.json trên GitHub.');
+  buildNav();
+  toast('✅ Đã lưu cài đặt!');
 }
 
 // ── Nav ───────────────────────────────────────────────────────
