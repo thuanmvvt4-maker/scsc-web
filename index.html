@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Phần Mềm Tổng Hợp Sửa Chữa</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1e3a8a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SCSC">
+<link rel="apple-touch-icon" href="/icon-192.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1e293b;min-height:100vh}
@@ -275,6 +282,11 @@ let toastTmr;
 function toast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.style.display='block';clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.style.display='none',3500)}
 
 fetchRemoteCfg().then(()=>buildNav());
+
+// ── Service Worker (PWA) ──────────────────────────────────────
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));
+}
 </script>
 </body>
 </html>
