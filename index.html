@@ -78,6 +78,11 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
 .toast{position:fixed;bottom:24px;right:24px;background:#1e3a8a;color:#fff;padding:11px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,.22);animation:fadeUp .3s ease}
 @keyframes fadeUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
 
+.export-bar{margin-top:14px;display:flex;justify-content:flex-end}
+.btn-export{display:inline-flex;align-items:center;gap:7px;background:#16a34a;color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;box-shadow:0 2px 8px rgba(22,163,74,.25)}
+.btn-export:hover{background:#15803d}
+.btn-export:active{transform:scale(.97)}
+
 .brand{position:fixed;bottom:10px;right:14px;font-size:11px;color:#94a3b8;font-style:italic;pointer-events:none;z-index:100}
 .footer{text-align:center;padding:12px;font-size:11px;color:#94a3b8;margin-top:8px;padding-bottom:28px}
 </style>
@@ -259,10 +264,14 @@ async function doSearch(){
   renderResults(results,b.rCols,headers,term);
 }
 
+let _lastExport=null; // lưu dữ liệu để xuất Excel
+
 function renderResults(rows,rCols,headers,term){
   if(!rows.length){
+    _lastExport=null;
     setContent(`<div class="empty-state"><div class="ico">📭</div><h3>Không tìm thấy kết quả</h3><p>Không có dữ liệu khớp với "<b>${esc(term)}</b>"</p></div>`);return;
   }
+  _lastExport={rows,rCols,headers,term};
   let h=`<div class="res-hdr"><div class="res-count">Tìm thấy <strong>${rows.length}</strong> kết quả cho "<strong>${esc(term)}</strong>"</div></div>
 <div class="tbl-wrap"><table><thead><tr>${headers.map(x=>`<th>${esc(x||'—')}</th>`).join('')}</tr></thead><tbody>`;
   rows.forEach(row=>{
@@ -270,7 +279,31 @@ function renderResults(rows,rCols,headers,term){
     rCols.forEach(ci=>{const v=row[ci]!=null?String(row[ci]):'';h+=`<td>${hilite(esc(v),term)}</td>`;});
     h+='</tr>';
   });
-  h+='</tbody></table></div>';setContent(h);
+  h+=`</tbody></table></div>
+<div class="export-bar">
+  <button class="btn-export" onclick="exportExcel()">📥 Xuất Excel (${rows.length} dòng)</button>
+</div>`;
+  setContent(h);
+}
+
+function exportExcel(){
+  if(!_lastExport)return;
+  const {rows,rCols,headers,term}=_lastExport;
+  const csvRows=[headers.map(h=>'"'+String(h).replace(/"/g,'""')+'"')];
+  rows.forEach(row=>{
+    csvRows.push(rCols.map(ci=>{
+      const v=row[ci]!=null?String(row[ci]):'';
+      return '"'+v.replace(/"/g,'""')+'"';
+    }));
+  });
+  const csv='﻿'+csvRows.map(r=>r.join(',')).join('\r\n'); // BOM UTF-8 cho Excel
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const date=new Date().toLocaleDateString('vi-VN').replace(/\//g,'-');
+  a.href=url; a.download=`KetQua_${term}_${date}.csv`; a.click();
+  URL.revokeObjectURL(url);
+  toast('✅ Đã xuất file Excel!');
 }
 
 // ── Helpers ───────────────────────────────────────────────────
