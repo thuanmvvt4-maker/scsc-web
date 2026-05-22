@@ -8,18 +8,17 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1e293b;min-height:100vh}
 
-.header{background:linear-gradient(135deg,#1a56db,#1e3a8a);color:#fff;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.header{background:linear-gradient(135deg,#1a56db,#1e3a8a);color:#fff;height:54px;display:flex;align-items:center;padding:0 20px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .header h1{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
-.hbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;transition:background .2s}
-.hbtn:hover{background:rgba(255,255,255,.28)}
 
 .nav{background:#1e3a8a;padding:8px 16px 0;display:flex;gap:7px;flex-wrap:wrap;border-bottom:3px solid #1a2f72}
-.nb{padding:9px 15px 10px;border:none;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;font-weight:600;transition:all .18s;display:flex;align-items:center;gap:5px;opacity:.85;max-width:155px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nb{padding:9px 15px 10px;border:none;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;font-weight:600;transition:all .18s;display:flex;align-items:center;gap:5px;opacity:.85;max-width:175px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nb:hover{opacity:1;filter:brightness(1.08)}
 .nb.active{opacity:1;box-shadow:inset 0 -3px 0 #fff;background:rgba(255,255,255,.18)!important;color:#fff!important}
 .nb.t1{background:#fbbf24;color:#78350f}
 .nb.t2{background:#34d399;color:#064e3b}
 .nb.t3{background:#c084fc;color:#3b0764}
+.nb.t4{background:#0ea5e9;color:#fff}
 .nb.ts{background:#94a3b8;color:#fff;opacity:.6}
 .nb.ts:hover{opacity:.85}
 .nb.ts.active{opacity:1}
@@ -69,28 +68,6 @@ td:first-child{font-weight:600;color:#1e3a8a}
 
 mark{background:#fef08a;padding:1px 2px;border-radius:2px}
 
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:1000;justify-content:center;align-items:flex-start;padding:32px 16px;overflow-y:auto}
-.overlay.open{display:flex}
-.modal{background:#fff;border-radius:16px;width:100%;max-width:700px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid #f1f5f9}
-.modal-hdr h2{font-size:17px;color:#1e3a8a;font-weight:700}
-.btn-close{width:30px;height:30px;background:#f1f5f9;border:none;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
-.btn-close:hover{background:#e2e8f0}
-
-.fsec{margin-bottom:14px;background:#f8fafc;border-radius:10px;padding:14px 16px}
-.fsec-title{font-size:11px;font-weight:700;text-transform:uppercase;color:#64748b;letter-spacing:.06em;margin-bottom:11px}
-.fg{margin-bottom:8px}
-.fg label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:3px}
-.fg input{width:100%;padding:7px 11px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;outline:none}
-.fg input:focus{border-color:#1e3a8a;box-shadow:0 0 0 2px rgba(30,58,138,.15)}
-.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-
-.modal-foot{display:flex;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid #f1f5f9}
-.btn-save{flex:1;background:#1e3a8a;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
-.btn-save:hover{background:#1d4ed8}
-.btn-cancel{background:#f1f5f9;color:#374151;border:none;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer}
-.btn-cancel:hover{background:#e2e8f0}
-
 .toast{position:fixed;bottom:24px;right:24px;background:#1e3a8a;color:#fff;padding:11px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,.22);animation:fadeUp .3s ease}
 @keyframes fadeUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
 
@@ -102,7 +79,6 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
 
 <div class="header">
   <h1>🔧 Phần Mềm Tổng Hợp Sửa Chữa</h1>
-  <button class="hbtn" onclick="openSettings()">⚙ Cài đặt</button>
 </div>
 
 <nav class="nav" id="nav"></nav>
@@ -121,82 +97,6 @@ mark{background:#fef08a;padding:1px 2px;border-radius:2px}
   </div>
 </div>
 
-<!-- Settings Modal -->
-<div class="overlay" id="overlay" onclick="if(event.target===this)closeSettings()">
-  <div class="modal">
-    <div class="modal-hdr">
-      <h2>⚙ Cài đặt</h2>
-      <button class="btn-close" onclick="closeSettings()">✕</button>
-    </div>
-
-    <!-- Nút 1 -->
-    <div class="fsec">
-      <div class="fsec-title">🔎 Nút 1 — Tra Tồn Kho (Google Sheets · tìm cột C → B, C, J)</div>
-      <div class="fg-row">
-        <div class="fg"><label>Tên nút</label><input id="s-tk-name" placeholder="Tra Tồn Kho"></div>
-        <div class="fg"><label>Tên Sheet</label><input id="s-tk-sheet" placeholder="tồn kho"></div>
-      </div>
-      <div class="fg"><label>Link Google Sheets</label><input id="s-tk-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
-    </div>
-
-    <!-- Nút 2 3 4 -->
-    <div class="fsec">
-      <div class="fsec-title">📋 Nút 2, 3, 4 — Scan BBKT (mở link)</div>
-      <div class="fg-row">
-        <div class="fg"><label>Tên nút 2</label><input id="s-b1-name" placeholder="Scan BBKT 1"></div>
-        <div class="fg"><label>Link nút 2</label><input id="s-b1-url" type="url" placeholder="https://..."></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Tên nút 3</label><input id="s-b2-name" placeholder="Scan BBKT 2"></div>
-        <div class="fg"><label>Link nút 3</label><input id="s-b2-url" type="url" placeholder="https://..."></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Tên nút 4</label><input id="s-b3-name" placeholder="Scan BBKT 3"></div>
-        <div class="fg"><label>Link nút 4</label><input id="s-b3-url" type="url" placeholder="https://..."></div>
-      </div>
-    </div>
-
-    <!-- Nút 5 6 7 -->
-    <div class="fsec">
-      <div class="fsec-title">🔍 Nút 5, 6, 7 — P.KTAT (Google Sheets · sheet cố định: QUAN LY BBKT · tìm cột E → B, D, E, H, N, O)</div>
-      <div class="fg-row">
-        <div class="fg"><label>Tên nút 5</label><input id="s-p1-name" placeholder="P.KT AT 1"></div>
-        <div class="fg"><label>Link Google Sheets nút 5</label><input id="s-p1-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Tên nút 6</label><input id="s-p2-name" placeholder="P.KTAT 2"></div>
-        <div class="fg"><label>Link Google Sheets nút 6</label><input id="s-p2-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Tên nút 7</label><input id="s-p4-name" placeholder="P.KTAT 4"></div>
-        <div class="fg"><label>Link Google Sheets nút 7</label><input id="s-p4-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
-      </div>
-    </div>
-
-    <!-- Nút dự phòng -->
-    <div class="fsec">
-      <div class="fsec-title">🔗 Nút 8, 9, 10 — Dự phòng (mở link)</div>
-      <div class="fg-row">
-        <div class="fg"><label>Tên nút 8</label><input id="s-s1-name" placeholder="(để trống)"></div>
-        <div class="fg"><label>Link nút 8</label><input id="s-s1-url" type="url" placeholder="https://..."></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Tên nút 9</label><input id="s-s2-name" placeholder="(để trống)"></div>
-        <div class="fg"><label>Link nút 9</label><input id="s-s2-url" type="url" placeholder="https://..."></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Tên nút 10</label><input id="s-s3-name" placeholder="(để trống)"></div>
-        <div class="fg"><label>Link nút 10</label><input id="s-s3-url" type="url" placeholder="https://..."></div>
-      </div>
-    </div>
-
-    <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeSettings()">Hủy</button>
-      <button class="btn-save" onclick="saveSettings()">💾 Lưu cài đặt</button>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 <div class="brand">A product by Thuanmv</div>
 <div class="footer">Phần Mềm Tổng Hợp Sửa Chữa · EVN · Kết nối Google Sheets</div>
@@ -211,69 +111,31 @@ const BTNS = {
   5:  {type:'search', cfgKey:'p1', cls:'t3', sCol:4, searchAll:true, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT', labels:['Số PCT BBNT','Số PCT BBKT','Nội dung','KTV','Số PYCVT','Số PXK']},
   6:  {type:'search', cfgKey:'p2', cls:'t3', sCol:4, searchAll:true, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT', labels:['Số PCT BBNT','Số PCT BBKT','Nội dung','KTV','Số PYCVT','Số PXK']},
   7:  {type:'search', cfgKey:'p4', cls:'t3', sCol:4, searchAll:true, rCols:[1,3,4,7,13,14], sh:'QUAN LY BBKT', labels:['Số PCT BBNT','Số PCT BBKT','Nội dung','KTV','Số PYCVT','Số PXK']},
-  8:  {type:'link',   cfgKey:'s1', cls:'ts'},
-  9:  {type:'link',   cfgKey:'s2', cls:'ts'},
+  8:  {type:'search', cfgKey:'s1', cls:'t4', sCols:[1,2], rCols:[1,2,5,6,7]},
+  9:  {type:'search', cfgKey:'s2', cls:'t4', sCols:[1,2], rCols:[1,2,5,6,7]},
   10: {type:'link',   cfgKey:'s3', cls:'ts'}
 };
-const ICONS = {t1:'🔎', t2:'📋', t3:'🔍', ts:'🔗'};
+const ICONS = {t1:'🔎', t2:'📋', t3:'🔍', t4:'📖', ts:'🔗'};
 
 const DEF = {
-  tk: {name:'Tra Tồn Kho', url:'https://docs.google.com/spreadsheets/d/1aT0ovPz7SCYCcl0LPfS7bTXUuX806FQZ/edit', sh:'tồn kho'},
-  b1: {name:'Scan BBKT 1', url:''}, b2:{name:'Scan BBKT 2',url:''}, b3:{name:'Scan BBKT 3',url:''},
-  p1: {name:'P.KT AT 1',   url:'https://docs.google.com/spreadsheets/d/1Uzw-8Czr-3rxKUpJUcEt0rUyUk-SrdV-/edit'},
-  p2: {name:'P.KTAT 2',    url:'https://docs.google.com/spreadsheets/d/1QEf2cStjaD9R1tIx1tXO23HbL90Yzym_/edit'},
-  p4: {name:'P.KTAT 4',    url:''},
-  s1: {name:'',url:''}, s2:{name:'',url:''}, s3:{name:'',url:''}
+  tk: {name:'Tra Tồn Kho',           url:'https://docs.google.com/spreadsheets/d/1aT0ovPz7SCYCcl0LPfS7bTXUuX806FQZ/edit', sh:'tồn kho'},
+  b1: {name:'Scan BBKT 1',           url:''}, b2:{name:'Scan BBKT 2',url:''}, b3:{name:'Scan BBKT 3',url:''},
+  p1: {name:'P.KT AT 1',             url:'https://docs.google.com/spreadsheets/d/1Uzw-8Czr-3rxKUpJUcEt0rUyUk-SrdV-/edit'},
+  p2: {name:'P.KTAT 2',              url:'https://docs.google.com/spreadsheets/d/1QEf2cStjaD9R1tIx1tXO23HbL90Yzym_/edit'},
+  p4: {name:'P.KTAT 4',              url:''},
+  s1: {name:'Lịch sử thiết bị cơ',  url:''},
+  s2: {name:'Lịch sử thiết bị điện',url:''},
+  s3: {name:'',url:''}
 };
 
-// ── Settings ──────────────────────────────────────────────────
+// ── Config (từ config.json — không dùng localStorage) ─────────
 let _remoteCfg=null;
 async function fetchRemoteCfg(){
   try{const r=await fetch('config.json?_='+Date.now());if(r.ok)_remoteCfg=await r.json();}
   catch{}
 }
 function loadCfg(){
-  // Thứ tự ưu tiên: DEF < config.json < localStorage (cài đặt tay)
-  const base=Object.assign({},DEF,_remoteCfg||{});
-  try{const s=localStorage.getItem('scscCfg4');return s?Object.assign({},base,JSON.parse(s)):base;}
-  catch{return base;}
-}
-function openSettings(){
-  const c=loadCfg();
-  document.getElementById('s-tk-name').value=c.tk.name;
-  document.getElementById('s-tk-url').value=c.tk.url;
-  document.getElementById('s-tk-sheet').value=c.tk.sh;
-  document.getElementById('s-b1-name').value=c.b1.name; document.getElementById('s-b1-url').value=c.b1.url;
-  document.getElementById('s-b2-name').value=c.b2.name; document.getElementById('s-b2-url').value=c.b2.url;
-  document.getElementById('s-b3-name').value=c.b3.name; document.getElementById('s-b3-url').value=c.b3.url;
-  document.getElementById('s-p1-name').value=c.p1.name; document.getElementById('s-p1-url').value=c.p1.url;
-  document.getElementById('s-p2-name').value=c.p2.name; document.getElementById('s-p2-url').value=c.p2.url;
-  document.getElementById('s-p4-name').value=c.p4.name; document.getElementById('s-p4-url').value=c.p4.url;
-  document.getElementById('s-s1-name').value=c.s1.name; document.getElementById('s-s1-url').value=c.s1.url;
-  document.getElementById('s-s2-name').value=c.s2.name; document.getElementById('s-s2-url').value=c.s2.url;
-  document.getElementById('s-s3-name').value=c.s3.name; document.getElementById('s-s3-url').value=c.s3.url;
-  document.getElementById('overlay').classList.add('open');
-}
-function closeSettings(){document.getElementById('overlay').classList.remove('open')}
-function saveSettings(){
-  const g=id=>document.getElementById(id).value.trim();
-  const cfg={
-    tk:{name:g('s-tk-name')||'Tra Tồn Kho', url:g('s-tk-url'), sh:g('s-tk-sheet')||'tồn kho'},
-    b1:{name:g('s-b1-name')||'Scan BBKT 1', url:g('s-b1-url')},
-    b2:{name:g('s-b2-name')||'Scan BBKT 2', url:g('s-b2-url')},
-    b3:{name:g('s-b3-name')||'Scan BBKT 3', url:g('s-b3-url')},
-    p1:{name:g('s-p1-name')||'P.KT AT 1',   url:g('s-p1-url')},
-    p2:{name:g('s-p2-name')||'P.KTAT 2',    url:g('s-p2-url')},
-    p4:{name:g('s-p4-name')||'P.KTAT 4',    url:g('s-p4-url')},
-    s1:{name:g('s-s1-name'), url:g('s-s1-url')},
-    s2:{name:g('s-s2-name'), url:g('s-s2-url')},
-    s3:{name:g('s-s3-name'), url:g('s-s3-url')}
-  };
-  localStorage.setItem('scscCfg4',JSON.stringify(cfg));
-  cache={};
-  closeSettings();
-  buildNav();
-  toast('✅ Đã lưu cài đặt!');
+  return Object.assign({},DEF,_remoteCfg||{});
 }
 
 // ── Nav ───────────────────────────────────────────────────────
@@ -283,8 +145,7 @@ function buildNav(){
   nav.innerHTML='';
   Object.keys(BTNS).forEach(n=>{
     const b=BTNS[n], e=cfg[b.cfgKey];
-    const isEmpty=(b.cls==='ts'&&!e.name&&!e.url);
-    const label=isEmpty?`Dự phòng ${n-7}`:e.name;
+    const label=(b.cls==='ts'&&!e.name&&!e.url)?`Dự phòng ${n-7}`:e.name;
     const btn=document.createElement('button');
     btn.className=`nb ${b.cls}${n==curBtn?' active':''}`;
     btn.id='nb'+n; btn.title=label;
@@ -304,8 +165,10 @@ function activate(n){
     sbar.style.display='flex';
     const inp=document.getElementById('sinput');
     inp.value='';
-    inp.placeholder=n===1?'Nhập tên vật tư / mã để tìm kiếm...':'Nhập tên thiết bị để tìm kiếm...';
-    setContent(`<div class="empty-state"><div class="ico">🔍</div><h3>Nhập từ khóa để tìm kiếm</h3><p>Tìm kiếm trong <b>${e.name}</b></p></div>`);
+    if(n===1) inp.placeholder='Nhập tên vật tư / mã để tìm kiếm...';
+    else if(n===8||n===9) inp.placeholder='Nhập tên hoặc mã thiết bị...';
+    else inp.placeholder='Nhập từ khóa tìm kiếm...';
+    setContent(`<div class="empty-state"><div class="ico">🔍</div><h3>Nhập từ khóa để tìm kiếm</h3><p>Tìm kiếm trong <b>${esc(e.name)}</b></p></div>`);
     setTimeout(()=>inp.focus(),80);
   }else{
     sbar.style.display='none';
@@ -316,7 +179,7 @@ function activate(n){
         <div class="url-txt">${esc(e.url)}</div></div>`);
     }else{
       setContent(`<div class="link-panel"><h3>${ICONS[b.cls]} ${esc(e.name||'Dự phòng')}</h3>
-        <div class="no-link">⚠ Chưa có link. Vào <strong>⚙ Cài đặt</strong> để thêm link.</div></div>`);
+        <div class="no-link">⚠ Chưa có link. Chỉnh sửa <b>config.json</b> trên GitHub để thêm link.</div></div>`);
     }
   }
 }
@@ -325,7 +188,7 @@ function activate(n){
 let cache={};
 function clearCache(){cache={};toast('🔄 Đã xóa cache — lần tìm tiếp tải dữ liệu mới.')}
 
-function fetchGSheets(sheetId,sheetName){
+function fetchGSheets(sheetId, sheetRef){
   return new Promise((resolve,reject)=>{
     const cb='_gviz'+Date.now().toString(36)+Math.random().toString(36).slice(2);
     let done=false;
@@ -348,7 +211,10 @@ function fetchGSheets(sheetId,sheetName){
       });
     };
     const sc=document.createElement('script');sc.id=cb;
-    sc.src=`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json;responseHandler:${cb}&sheet=${encodeURIComponent(sheetName)}&headers=1`;
+    // Nếu sheetRef là số (GID) → dùng gid=, ngược lại dùng sheet=
+    const isGid=/^\d+$/.test(String(sheetRef));
+    const sheetParam=isGid?`gid=${sheetRef}`:`sheet=${encodeURIComponent(sheetRef)}`;
+    sc.src=`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json;responseHandler:${cb}&${sheetParam}&headers=1`;
     sc.onerror=()=>{if(!done){done=true;clearTimeout(tmr);cleanup();
       reject(new Error('Không kết nối được Google Sheets.<br>Sheet cần được chia sẻ <b>"Bất kỳ ai có đường liên kết"</b>.'))}};
     document.head.appendChild(sc);
@@ -362,20 +228,23 @@ async function doSearch(){
   const b=BTNS[curBtn];
   if(b.type!=='search')return;
   const cfg=loadCfg(), e=cfg[b.cfgKey];
-  if(!e.url){setContent('<div class="err-box">⚠ Chưa cài đặt link Google Sheets. Vào ⚙ Cài đặt để thêm.</div>');return;}
+  if(!e.url){setContent('<div class="err-box">⚠ Chưa cài đặt link Google Sheets. Chỉnh sửa <b>config.json</b> trên GitHub.</div>');return;}
   const m=e.url.match(/\/spreadsheets\/d\/([A-Za-z0-9_-]+)/);
   if(!m){setContent('<div class="err-box">⚠ Link Google Sheets không hợp lệ.</div>');return;}
-  const shName=b.sh||e.sh||'Sheet1';
-  const cKey=b.cfgKey+'|'+shName;
+  // Ưu tiên: sh cứng trong BTNS → GID trong URL → sh từ config → Sheet1
+  const urlGid=e.url.match(/[?&#]gid=(\d+)/)?.[1];
+  const shRef=b.sh||(urlGid||e.sh||'Sheet1');
+  const cKey=b.cfgKey+'|'+shRef;
   let data=cache[cKey];
   if(!data){
     setContent('<div class="loading"><div class="spinner"></div><p>Đang tải dữ liệu từ Google Sheets...</p></div>');
-    try{data=await fetchGSheets(m[1],shName);cache[cKey]=data;}
+    try{data=await fetchGSheets(m[1],shRef);cache[cKey]=data;}
     catch(err){setContent(`<div class="err-box">❌ ${err.message}</div>`);return;}
   }
   const termLow=term.toLowerCase();
   const results=data.rows.filter(row=>{
     if(b.searchAll) return row.some(v=>v!=null&&String(v).toLowerCase().includes(termLow));
+    if(b.sCols)     return b.sCols.some(i=>(row[i]!=null?String(row[i]):'').toLowerCase().includes(termLow));
     const v=row[b.sCol]!=null?String(row[b.sCol]):'';
     return v.toLowerCase().includes(termLow);
   });

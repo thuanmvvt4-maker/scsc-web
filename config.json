@@ -1,12 +1,12 @@
 {
-  "tk":  { "name": "Tra Tồn Kho",  "url": "https://docs.google.com/spreadsheets/d/1aT0ovPz7SCYCcl0LPfS7bTXUuX806FQZ/edit", "sh": "tồn kho" },
-  "b1":  { "name": "Scan BBKT 1",  "url": "https://1drv.ms/f/c/6091196ad18ed3e0/IgDg526d4mC1SZMyxc9ebAdKAT7ZLiWZA8WaAHNO0Z6F5IA?e=9DJWAg" },
-  "b2":  { "name": "Scan BBKT 2",  "url": "https://1drv.ms/f/c/6091196ad18ed3e0/IgCTcHLYvZW8T7J12aWHRB9IAVelrodYgLYR0LrSBbyxaY4?e=Xebhnf" },
-  "b3":  { "name": "Scan BBKT 3",  "url": "" },
-  "p1":  { "name": "P.KT AT 1",    "url": "https://docs.google.com/spreadsheets/d/1Uzw-8Czr-3rxKUpJUcEt0rUyUk-SrdV-/edit" },
-  "p2":  { "name": "P.KTAT 2",     "url": "https://docs.google.com/spreadsheets/d/1QEf2cStjaD9R1tIx1tXO23HbL90Yzym_/edit" },
-  "p4":  { "name": "P.KTAT 4",     "url": "" },
-  "s1":  { "name": "",             "url": "" },
-  "s2":  { "name": "",             "url": "" },
-  "s3":  { "name": "",             "url": "" }
+  "tk":  { "name": "Tra Tồn Kho",            "url": "https://docs.google.com/spreadsheets/d/1aT0ovPz7SCYCcl0LPfS7bTXUuX806FQZ/edit", "sh": "tồn kho" },
+  "b1":  { "name": "Scan BBKT 1",            "url": "https://1drv.ms/f/c/6091196ad18ed3e0/IgDg526d4mC1SZMyxc9ebAdKAT7ZLiWZA8WaAHNO0Z6F5IA?e=9DJWAg" },
+  "b2":  { "name": "Scan BBKT 2",            "url": "https://1drv.ms/f/c/6091196ad18ed3e0/IgCTcHLYvZW8T7J12aWHRB9IAVelrodYgLYR0LrSBbyxaY4?e=Xebhnf" },
+  "b3":  { "name": "Scan BBKT 3",            "url": "" },
+  "p1":  { "name": "P.KT AT 1",              "url": "https://docs.google.com/spreadsheets/d/1Uzw-8Czr-3rxKUpJUcEt0rUyUk-SrdV-/edit" },
+  "p2":  { "name": "P.KTAT 2",               "url": "https://docs.google.com/spreadsheets/d/1QEf2cStjaD9R1tIx1tXO23HbL90Yzym_/edit" },
+  "p4":  { "name": "P.KTAT 4",               "url": "" },
+  "s1":  { "name": "Lịch sử thiết bị cơ",   "url": "https://docs.google.com/spreadsheets/d/162bAlPrDAw5UuNBQgD-lzBkUsrtlIXna/edit?gid=1415831943" },
+  "s2":  { "name": "Lịch sử thiết bị điện", "url": "" },
+  "s3":  { "name": "",                       "url": "" }
 }
