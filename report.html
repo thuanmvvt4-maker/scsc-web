@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo Cáo Tuần — PXNL</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1e3a8a">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<script src="https://unpkg.com/docx@7.8.2/build/index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1e293b;min-height:100vh;padding-bottom:80px}
+
+.header{background:linear-gradient(135deg,#1a56db,#1e3a8a);color:#fff;height:54px;display:flex;align-items:center;gap:16px;padding:0 20px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.back-btn{color:#fff;text-decoration:none;font-size:13px;font-weight:600;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 12px;border-radius:6px;white-space:nowrap}
+.back-btn:hover{background:rgba(255,255,255,.28)}
+.header h1{font-size:16px;font-weight:700}
+
+.wrap{max-width:860px;margin:20px auto;padding:0 16px;display:flex;flex-direction:column;gap:16px}
+
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:20px}
+.card-title{font-size:14px;font-weight:700;color:#1e3a8a;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.badge{background:#1e3a8a;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+
+/* Config grid */
+.cfg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.fg label{display:block;font-size:11px;font-weight:600;color:#64748b;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+.fg input,.fg select{width:100%;padding:7px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;outline:none;font-family:inherit}
+.fg input:focus,.fg select:focus{border-color:#1e3a8a;box-shadow:0 0 0 2px rgba(30,58,138,.12)}
+
+/* Mục I */
+.inp-row{display:flex;gap:8px;margin-bottom:10px}
+.inp-row input{flex:1;padding:9px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;font-family:inherit}
+.inp-row input:focus{border-color:#1e3a8a;box-shadow:0 0 0 2px rgba(30,58,138,.12)}
+.btn-add{padding:9px 18px;background:#1e3a8a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-add:hover{background:#1d4ed8}
+
+.item-list{display:flex;flex-direction:column;gap:6px}
+.item-row{display:flex;align-items:flex-start;gap:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px}
+.item-num{background:#1e3a8a;color:#fff;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.item-txt{flex:1;font-size:13px;line-height:1.5;word-break:break-word}
+.item-txt textarea{width:100%;border:1px solid #d1d5db;border-radius:5px;padding:4px 8px;font-size:13px;font-family:inherit;resize:vertical;display:none}
+.item-acts{display:flex;gap:4px;flex-shrink:0}
+.act-btn{width:26px;height:26px;border:none;border-radius:5px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
+.btn-edit{background:#fef3c7;color:#92400e}
+.btn-edit:hover{background:#fde68a}
+.btn-del{background:#fee2e2;color:#dc2626}
+.btn-del:hover{background:#fecaca}
+.btn-ok{background:#d1fae5;color:#065f46}
+.btn-ok:hover{background:#a7f3d0}
+
+/* Mục II form */
+.form2{display:grid;grid-template-columns:1fr 2fr;gap:8px;margin-bottom:12px;align-items:start}
+.form2 input{padding:9px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;font-family:inherit;width:100%}
+.form2 input:focus{border-color:#1e3a8a;box-shadow:0 0 0 2px rgba(30,58,138,.12)}
+.form2-row{grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.img-upload-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;color:#475569}
+.img-upload-btn:hover{background:#e2e8f0;border-color:#64748b}
+.img-upload-btn input{display:none}
+.img-preview-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.img-thumb{position:relative;width:60px;height:60px}
+.img-thumb img{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0}
+.img-thumb .rm-img{position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:#dc2626;color:#fff;border:none;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+
+/* Table Mục II */
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:#1e3a8a;color:#fff;padding:10px 12px;text-align:left;font-weight:600}
+thead th:first-child{width:44px;text-align:center}
+thead th:last-child{width:80px;text-align:center}
+tbody tr{border-bottom:1px solid #f1f5f9}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#f8fafc}
+td{padding:10px 12px;vertical-align:top}
+td:first-child{text-align:center;font-weight:700;color:#1e3a8a;vertical-align:middle}
+td.td-img{text-align:center}
+td.td-img img{max-width:70px;max-height:70px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0;margin:2px}
+td.td-acts{text-align:center;vertical-align:middle}
+.empty-row td{text-align:center;color:#94a3b8;padding:20px;font-style:italic}
+
+/* Bottom bar */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e2e8f0;padding:12px 20px;display:flex;justify-content:center;gap:12px;box-shadow:0 -2px 12px rgba(0,0,0,.08);z-index:100}
+.btn-export{display:inline-flex;align-items:center;gap:8px;padding:11px 32px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;box-shadow:0 2px 8px rgba(22,163,74,.3)}
+.btn-export:hover{background:#15803d}
+.btn-clear{padding:11px 20px;background:#f1f5f9;color:#374151;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.btn-clear:hover{background:#e2e8f0}
+
+.toast{position:fixed;bottom:80px;right:20px;background:#1e3a8a;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+
+.brand{position:fixed;bottom:10px;right:14px;font-size:11px;color:#94a3b8;font-style:italic;pointer-events:none;z-index:200}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="/" class="back-btn">← Trang chủ</a>
+  <h1>📊 Báo Cáo Công Tác Tuần</h1>
+</div>
+
+<div class="wrap">
+
+  <!-- Cấu hình -->
+  <div class="card">
+    <div class="card-title">⚙ Thông tin báo cáo</div>
+    <div class="cfg-grid">
+      <div class="fg"><label>Tuần số</label><input id="c-tuan" type="number" min="1" max="53" oninput="saveCfg()"></div>
+      <div class="fg"><label>Năm</label><input id="c-nam" type="number" oninput="saveCfg()"></div>
+      <div class="fg"><label>Ngày</label><input id="c-ngay" type="number" min="1" max="31" oninput="saveCfg()"></div>
+      <div class="fg"><label>Tháng</label><input id="c-thang" type="number" min="1" max="12" oninput="saveCfg()"></div>
+      <div class="fg"><label>Số VB (/PXNL)</label><input id="c-sovb" placeholder="VD: 25" oninput="saveCfg()"></div>
+      <div class="fg" style="grid-column:span 2"><label>Nhóm</label>
+        <select id="c-nhom" onchange="saveCfg()">
+          <option>Nhóm sửa chữa điện</option>
+          <option>Nhóm sửa chữa cơ</option>
+          <option>Nhóm sửa chữa nhiên liệu</option>
+        </select>
+      </div>
+      <div class="fg" style="grid-column:span 2"><label>Người ký tên</label><input id="c-ten" oninput="saveCfg()"></div>
+    </div>
+  </div>
+
+  <!-- Mục I -->
+  <div class="card">
+    <div class="card-title">📋 Mục I — Tình hình công tác tuần <span class="badge" id="badge1">0</span></div>
+    <div class="inp-row">
+      <input type="text" id="inp1" placeholder="Nhập nội dung công tác rồi nhấn Thêm hoặc Enter..." onkeydown="if(event.key==='Enter')addMucI()">
+      <button class="btn-add" onclick="addMucI()">+ Thêm</button>
+    </div>
+    <div class="item-list" id="list1"></div>
+  </div>
+
+  <!-- Mục II -->
+  <div class="card">
+    <div class="card-title">🔧 Mục II — Công tác phối hợp sửa chữa <span class="badge" id="badge2">0</span></div>
+    <div class="form2">
+      <input type="text" id="inp-pct" placeholder="Số PCT (VD: 256/2026/NL-VT4)">
+      <input type="text" id="inp-nd" placeholder="Mô tả công việc đã thực hiện...">
+      <div class="form2-row">
+        <label class="img-upload-btn"><input type="file" id="inp-img" multiple accept="image/*" onchange="onImgSelect(event)">📎 Đính kèm ảnh</label>
+        <div class="img-preview-row" id="img-preview"></div>
+        <button class="btn-add" onclick="addMucII()">+ Thêm PCT</button>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>STT</th><th>Số PCT</th><th>Nội dung thực hiện</th><th>Hình ảnh</th><th></th></tr></thead>
+        <tbody id="tbody2"><tr class="empty-row"><td colspan="5">Chưa có phiếu nào</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-bar">
+  <button class="btn-clear" onclick="clearAll()">🗑 Xóa tất cả</button>
+  <button class="btn-export" onclick="exportWord()">📄 Xuất file Word</button>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="brand">A product by Thuanmv</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────
+let mucI = [];       // [{text}]
+let mucII = [];      // [{soPCT, noiDung, imgs:[{name,dataUrl,mime}]}]
+let pendingImgs = [];// images đang chờ thêm vào PCT
+
+// ── Config ────────────────────────────────────────────────────
+function getWeekNum() {
+  const d = new Date(); d.setHours(0,0,0,0);
+  d.setDate(d.getDate() + 3 - (d.getDay()+6)%7);
+  const w = new Date(d.getFullYear(),0,4);
+  return 1 + Math.round(((d-w)/86400000 - 3 + (w.getDay()+6)%7)/7);
+}
+function loadCfg() {
+  const now = new Date();
+  const def = { tuan: getWeekNum(), nam: now.getFullYear(), ngay: now.getDate(),
+    thang: now.getMonth()+1, sovb:'', nhom:'Nhóm sửa chữa điện', ten:'Minh Văn Thuận' };
+  try { return Object.assign(def, JSON.parse(localStorage.getItem('bctCfg')||'{}')); }
+  catch { return def; }
+}
+function saveCfg() {
+  const c = {
+    tuan: v('c-tuan'), nam: v('c-nam'), ngay: v('c-ngay'), thang: v('c-thang'),
+    sovb: v('c-sovb'), nhom: v('c-nhom'), ten: v('c-ten')
+  };
+  localStorage.setItem('bctCfg', JSON.stringify(c));
+}
+function initCfg() {
+  const c = loadCfg();
+  set('c-tuan', c.tuan); set('c-nam', c.nam); set('c-ngay', c.ngay);
+  set('c-thang', c.thang); set('c-sovb', c.sovb); set('c-ten', c.ten);
+  const sel = document.getElementById('c-nhom');
+  [...sel.options].forEach((o,i)=>{ if(o.value===c.nhom||o.text===c.nhom) sel.selectedIndex=i; });
+}
+function v(id) { return document.getElementById(id).value.trim(); }
+function set(id, val) { document.getElementById(id).value = val||''; }
+
+// ── Mục I ─────────────────────────────────────────────────────
+function addMucI() {
+  const txt = v('inp1'); if(!txt) { toast('⚠ Nhập nội dung trước'); return; }
+  mucI.push({ text: txt }); set('inp1','');
+  renderMucI(); saveDraft();
+}
+function delMucI(i) { mucI.splice(i,1); renderMucI(); saveDraft(); }
+function editMucI(i) {
+  const el = document.getElementById('txt-'+i);
+  const ta = document.getElementById('ta-'+i);
+  const ok = document.getElementById('ok-'+i);
+  const ed = document.getElementById('ed-'+i);
+  el.style.display='none'; ta.style.display='block'; ok.style.display='flex'; ed.style.display='none';
+  ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+}
+function saveMucI(i) {
+  const ta = document.getElementById('ta-'+i);
+  mucI[i].text = ta.value.trim() || mucI[i].text;
+  renderMucI(); saveDraft();
+}
+function renderMucI() {
+  const el = document.getElementById('list1');
+  document.getElementById('badge1').textContent = mucI.length;
+  if (!mucI.length) { el.innerHTML = ''; return; }
+  el.innerHTML = mucI.map((it,i) => `
+    <div class="item-row">
+      <div class="item-num">${i+1}</div>
+      <div class="item-txt">
+        <span id="txt-${i}">${esc(it.text)}</span>
+        <textarea id="ta-${i}" rows="2" style="display:none">${it.text}</textarea>
+      </div>
+      <div class="item-acts">
+        <button class="act-btn btn-ok" id="ok-${i}" style="display:none" onclick="saveMucI(${i})">✓</button>
+        <button class="act-btn btn-edit" id="ed-${i}" onclick="editMucI(${i})">✏</button>
+        <button class="act-btn btn-del" onclick="delMucI(${i})">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+// ── Pending images ─────────────────────────────────────────────
+function onImgSelect(e) {
+  const files = [...e.target.files];
+  const promises = files.map(f => new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = ev => resolve({ name: f.name, dataUrl: ev.target.result, mime: f.type });
+    reader.readAsDataURL(f);
+  }));
+  Promise.all(promises).then(imgs => {
+    pendingImgs.push(...imgs);
+    renderPendingImgs();
+    document.getElementById('inp-img').value = '';
+  });
+}
+function removePendingImg(i) { pendingImgs.splice(i,1); renderPendingImgs(); }
+function renderPendingImgs() {
+  document.getElementById('img-preview').innerHTML = pendingImgs.map((img,i) => `
+    <div class="img-thumb">
+      <img src="${img.dataUrl}" title="${esc(img.name)}">
+      <button class="rm-img" onclick="removePendingImg(${i})">✕</button>
+    </div>`).join('');
+}
+
+// ── Mục II ────────────────────────────────────────────────────
+function addMucII() {
+  const pct = v('inp-pct'); const nd = v('inp-nd');
+  if(!pct && !nd) { toast('⚠ Nhập Số PCT hoặc Nội dung'); return; }
+  mucII.push({ soPCT: pct, noiDung: nd, imgs: [...pendingImgs] });
+  set('inp-pct',''); set('inp-nd','');
+  pendingImgs = []; renderPendingImgs();
+  renderMucII(); saveDraft();
+}
+function delMucII(i) { mucII.splice(i,1); renderMucII(); saveDraft(); }
+function renderMucII() {
+  const tb = document.getElementById('tbody2');
+  document.getElementById('badge2').textContent = mucII.length;
+  if (!mucII.length) {
+    tb.innerHTML = '<tr class="empty-row"><td colspan="5">Chưa có phiếu nào</td></tr>'; return;
+  }
+  tb.innerHTML = mucII.map((it,i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>${esc(it.soPCT)}</td>
+      <td>${esc(it.noiDung)}</td>
+      <td class="td-img">${it.imgs.map(img=>`<img src="${img.dataUrl}" title="${esc(img.name)}">`).join('')}</td>
+      <td class="td-acts">
+        <button class="act-btn btn-del" onclick="delMucII(${i})">✕</button>
+      </td>
+    </tr>`).join('');
+}
+
+// ── Draft ─────────────────────────────────────────────────────
+function saveDraft() {
+  localStorage.setItem('bctDraft', JSON.stringify({ mucI, mucII }));
+}
+function loadDraft() {
+  try {
+    const d = JSON.parse(localStorage.getItem('bctDraft')||'{}');
+    if (d.mucI) mucI = d.mucI;
+    if (d.mucII) mucII = d.mucII;
+  } catch {}
+  renderMucI(); renderMucII();
+}
+function clearAll() {
+  if (!confirm('Xóa toàn bộ nội dung đã nhập?')) return;
+  mucI = []; mucII = []; pendingImgs = [];
+  renderMucI(); renderMucII(); renderPendingImgs();
+  saveDraft(); toast('🗑 Đã xóa');
+}
+
+// ── Export Word ───────────────────────────────────────────────
+async function exportWord() {
+  if (typeof docx === 'undefined') {
+    toast('❌ Thư viện Word chưa tải xong, thử lại sau'); return;
+  }
+  const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+          ImageRun, AlignmentType, BorderStyle, WidthType, ShadingType, VerticalAlign,
+          UnderlineType } = docx;
+
+  const cfg = {
+    tuan: v('c-tuan')||'?', nam: v('c-nam')||new Date().getFullYear(),
+    ngay: v('c-ngay')||'  ', thang: v('c-thang')||'  ',
+    sovb: v('c-sovb')||'   ', nhom: v('c-nhom'), ten: v('c-ten')
+  };
+
+  const W = 9072; // content width DXA (A4 - margins)
+  const NONE = { style: BorderStyle.NONE, size: 0 };
+  const SOLID = { style: BorderStyle.SINGLE, size: 4, color: "000000" };
+  const cellNB = { top: NONE, bottom: NONE, left: NONE, right: NONE };
+  const cellBD = { top: SOLID, bottom: SOLID, left: SOLID, right: SOLID };
+  const tblNB = { top: NONE, bottom: NONE, left: NONE, right: NONE, insideH: NONE, insideV: NONE };
+
+  // Paragraph helper
+  const P = (children, opts={}) => new Paragraph({ children: Array.isArray(children)?children:[children], ...opts });
+  const T = (text, opts={}) => new TextRun({ text: String(text), font: 'Times New Roman', size: 24, ...opts });
+
+  // Image helper
+  const imgPara = async (img) => {
+    try {
+      const b64 = img.dataUrl.split(',')[1];
+      const bin = atob(b64); const buf = new Uint8Array(bin.length);
+      for(let i=0;i<bin.length;i++) buf[i]=bin.charCodeAt(i);
+      const ext = img.mime.includes('jpeg')||img.mime.includes('jpg') ? 'jpg' : 'png';
+      return new Paragraph({
+        alignment: AlignmentType.CENTER,
+        children: [new ImageRun({
+          type: ext, data: buf.buffer,
+          transformation: { width: 140, height: 105 },
+          altText: { title: img.name, description: img.name, name: img.name }
+        })]
+      });
+    } catch(e) { return P(T('[Ảnh lỗi]')); }
+  };
+
+  // Header 2-col table
+  const hdrTable = new Table({
+    width: { size: W, type: WidthType.DXA },
+    columnWidths: [W/2, W/2],
+    borders: tblNB,
+    rows: [new TableRow({ children: [
+      new TableCell({ borders: cellNB, width: { size: W/2, type: WidthType.DXA }, children: [
+        P(T('PHÂN XƯỞNG NHIÊN LIỆU', { bold:true }), { alignment: AlignmentType.CENTER }),
+        P(T('NHÓM SỬA CHỮA', { bold:true }), { alignment: AlignmentType.CENTER }),
+      ]}),
+      new TableCell({ borders: cellNB, width: { size: W/2, type: WidthType.DXA }, children: [
+        P(T('CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM', { bold:true }), { alignment: AlignmentType.CENTER }),
+        P([T('Độc lập – Tự do – Hạnh phúc', { bold:true, underline:{ type: UnderlineType.SINGLE } })], { alignment: AlignmentType.CENTER }),
+      ]}),
+    ]})]
+  });
+
+  // Số + Date row
+  const infoTable = new Table({
+    width: { size: W, type: WidthType.DXA },
+    columnWidths: [W/2, W/2],
+    borders: tblNB,
+    rows: [new TableRow({ children: [
+      new TableCell({ borders: cellNB, width: { size: W/2, type: WidthType.DXA }, children: [
+        P(T(`Số: ${cfg.sovb}/PXNL`), { alignment: AlignmentType.CENTER })
+      ]}),
+      new TableCell({ borders: cellNB, width: { size: W/2, type: WidthType.DXA }, children: [
+        P(T(`Lâm Đồng, ngày ${cfg.ngay} tháng ${cfg.thang} năm ${cfg.nam}`), { alignment: AlignmentType.CENTER })
+      ]}),
+    ]})]
+  });
+
+  // Mục II table rows
+  const colW = [500, 1800, 4272, 2500]; // sum = 9072
+  const thCell = (txt) => new TableCell({
+    borders: cellBD, verticalAlign: VerticalAlign.CENTER,
+    shading: { fill: 'BDD7EE', type: ShadingType.CLEAR },
+    children: [P(T(txt, { bold:true }), { alignment: AlignmentType.CENTER })]
+  });
+  const tblHeaderRow = new TableRow({ children: [
+    thCell('STT'), thCell('Số PCT'), thCell('Nội dung thực hiện'), thCell('Hình ảnh')
+  ]});
+
+  const dataRows = await Promise.all(mucII.map(async (it,i) => {
+    const imgParas = it.imgs.length
+      ? await Promise.all(it.imgs.map(img => imgPara(img)))
+      : [P(T(''))];
+    return new TableRow({ children: [
+      new TableCell({ borders: cellBD, width: { size: colW[0], type: WidthType.DXA }, verticalAlign: VerticalAlign.CENTER,
+        children: [P(T(String(i+1)), { alignment: AlignmentType.CENTER })] }),
+      new TableCell({ borders: cellBD, width: { size: colW[1], type: WidthType.DXA },
+        children: [P(T(it.soPCT))] }),
+      new TableCell({ borders: cellBD, width: { size: colW[2], type: WidthType.DXA },
+        children: [P(T(it.noiDung))] }),
+      new TableCell({ borders: cellBD, width: { size: colW[3], type: WidthType.DXA },
+        children: imgParas }),
+    ]});
+  }));
+
+  if (!dataRows.length) {
+    dataRows.push(new TableRow({ children: colW.map(w =>
+      new TableCell({ borders: cellBD, width: { size: w, type: WidthType.DXA }, children: [P(T(''))] })
+    )}));
+  }
+
+  const mucIITable = new Table({
+    width: { size: W, type: WidthType.DXA },
+    columnWidths: colW,
+    rows: [tblHeaderRow, ...dataRows]
+  });
+
+  // Signature table
+  const sigTable = new Table({
+    width: { size: W, type: WidthType.DXA },
+    columnWidths: [W/2, W/2],
+    borders: tblNB,
+    rows: [new TableRow({ children: [
+      new TableCell({ borders: cellNB, width: { size: W/2, type: WidthType.DXA }, children: [P(T(''))] }),
+      new TableCell({ borders: cellNB, width: { size: W/2, type: WidthType.DXA }, children: [
+        P(T(cfg.nhom, { bold:true }), { alignment: AlignmentType.CENTER }),
+        P(T('')), P(T('')), P(T('')), P(T('')),
+        P(T(cfg.ten, { bold:true }), { alignment: AlignmentType.CENTER }),
+      ]}),
+    ]})]
+  });
+
+  // Full document
+  const doc = new Document({
+    sections: [{
+      properties: {
+        page: {
+          size: { width: 11906, height: 16838 },
+          margin: { top: 1134, right: 851, bottom: 1134, left: 1701 }
+        }
+      },
+      children: [
+        hdrTable,
+        P(T('')),
+        infoTable,
+        P(T('')),
+        P(T('BÁO CÁO', { bold:true, size:28 }), { alignment: AlignmentType.CENTER }),
+        P(T(`V/v thực hiện công tác tuần ${cfg.tuan} năm ${cfg.nam} của ${cfg.nhom}`), { alignment: AlignmentType.CENTER }),
+        P(T('')),
+        P([T('Kính gửi: ', { bold:true, italics:true }), T('Lãnh đạo Phân xưởng Nhiên liệu', { italics:true })]),
+        P(T('')),
+        P(T('I. Tình hình công tác tuần', { bold:true })),
+        ...(mucI.length ? mucI.map(it => P(T(`- ${it.text}`))) : [P(T(''))]),
+        P(T('')),
+        P(T(`II. Các công tác phối hợp sửa chữa trong tuần ${cfg.tuan}`, { bold:true })),
+        mucIITable,
+        P(T('')),
+        P(T('Trân trọng./.'), { alignment: AlignmentType.RIGHT }),
+        P(T('')),
+        sigTable,
+      ]
+    }]
+  });
+
+  try {
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, `BaoCaoTuan${cfg.tuan}_${cfg.nam}.docx`);
+    toast('✅ Đã xuất file Word thành công!');
+  } catch(e) {
+    console.error(e);
+    toast('❌ Lỗi xuất file: ' + e.message);
+  }
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+let toastTmr;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.style.display='none',3500)}
+
+// ── Init ──────────────────────────────────────────────────────
+initCfg(); loadDraft();
+</script>
+</body>
+</html>
