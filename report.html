@@ -89,6 +89,23 @@ td.td-acts{text-align:center;vertical-align:middle}
 
 .toast{position:fixed;bottom:80px;right:20px;background:#1e3a8a;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,.2)}
 
+/* Edit modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:540px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h3{font-size:16px;font-weight:700;color:#1e3a8a;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid #f1f5f9}
+.modal .fg{margin-bottom:12px}
+.modal .fg label{display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:4px}
+.modal .fg input,.modal .fg textarea{width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;font-family:inherit}
+.modal .fg textarea{resize:vertical;min-height:80px}
+.modal .fg input:focus,.modal .fg textarea:focus{border-color:#1e3a8a;box-shadow:0 0 0 2px rgba(30,58,138,.12)}
+.modal-imgs{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.modal-foot{display:flex;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid #f1f5f9}
+.btn-save-modal{flex:1;background:#1e3a8a;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-save-modal:hover{background:#1d4ed8}
+.btn-cancel-modal{background:#f1f5f9;color:#374151;border:none;padding:10px 18px;border-radius:8px;font-size:14px;cursor:pointer}
+.btn-cancel-modal:hover{background:#e2e8f0}
+
 .brand{position:fixed;bottom:10px;right:14px;font-size:11px;color:#94a3b8;font-style:italic;pointer-events:none;z-index:200}
 </style>
 </head>
@@ -156,6 +173,26 @@ td.td-acts{text-align:center;vertical-align:middle}
 <div class="bottom-bar">
   <button class="btn-clear" onclick="clearAll()">🗑 Xóa tất cả</button>
   <button class="btn-export" onclick="exportWord()">📄 Xuất file Word</button>
+</div>
+
+<!-- Edit modal Mục II -->
+<div class="overlay" id="edit-overlay" onclick="if(event.target===this)closeEdit()">
+  <div class="modal">
+    <h3>✏️ Chỉnh sửa phiếu</h3>
+    <div class="fg"><label>Số PCT</label><input id="edit-pct" placeholder="VD: 256/2026/NL-VT4"></div>
+    <div class="fg"><label>Nội dung thực hiện</label><textarea id="edit-nd" rows="3" placeholder="Mô tả công việc..."></textarea></div>
+    <div class="fg">
+      <label>Hình ảnh</label>
+      <div class="modal-imgs" id="edit-imgs"></div>
+      <label class="img-upload-btn" style="margin-top:8px">
+        <input type="file" multiple accept="image/*" onchange="onEditImgSelect(event)">📎 Thêm ảnh
+      </label>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel-modal" onclick="closeEdit()">Hủy</button>
+      <button class="btn-save-modal" onclick="saveEdit()">💾 Lưu thay đổi</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -283,9 +320,52 @@ function renderMucII() {
       <td>${esc(it.noiDung)}</td>
       <td class="td-img">${it.imgs.map(img=>`<img src="${img.dataUrl}" title="${esc(img.name)}">`).join('')}</td>
       <td class="td-acts">
-        <button class="act-btn btn-del" onclick="delMucII(${i})">✕</button>
+        <button class="act-btn btn-edit" onclick="openEdit(${i})" title="Chỉnh sửa">✏</button>
+        <button class="act-btn btn-del"  onclick="delMucII(${i})"  title="Xóa">✕</button>
       </td>
     </tr>`).join('');
+}
+
+// ── Edit modal Mục II ─────────────────────────────────────────
+let _editIdx = -1;
+let _editImgs = [];
+
+function openEdit(i) {
+  _editIdx = i;
+  _editImgs = [...mucII[i].imgs];
+  document.getElementById('edit-pct').value = mucII[i].soPCT;
+  document.getElementById('edit-nd').value  = mucII[i].noiDung;
+  renderEditImgs();
+  document.getElementById('edit-overlay').classList.add('open');
+  document.getElementById('edit-pct').focus();
+}
+function closeEdit() {
+  document.getElementById('edit-overlay').classList.remove('open');
+  _editIdx = -1; _editImgs = [];
+}
+function saveEdit() {
+  if (_editIdx < 0) return;
+  mucII[_editIdx].soPCT   = document.getElementById('edit-pct').value.trim();
+  mucII[_editIdx].noiDung = document.getElementById('edit-nd').value.trim();
+  mucII[_editIdx].imgs    = [..._editImgs];
+  closeEdit(); renderMucII(); saveDraft();
+  toast('✅ Đã lưu thay đổi!');
+}
+function removeEditImg(i) { _editImgs.splice(i,1); renderEditImgs(); }
+function renderEditImgs() {
+  document.getElementById('edit-imgs').innerHTML = _editImgs.map((img,i) => `
+    <div class="img-thumb">
+      <img src="${img.dataUrl}" title="${esc(img.name)}">
+      <button class="rm-img" onclick="removeEditImg(${i})">✕</button>
+    </div>`).join('') || '<span style="font-size:12px;color:#94a3b8">Chưa có ảnh</span>';
+}
+function onEditImgSelect(e) {
+  const files = [...e.target.files];
+  Promise.all(files.map(f => new Promise(resolve => {
+    const r = new FileReader();
+    r.onload = ev => resolve({ name: f.name, dataUrl: ev.target.result, mime: f.type });
+    r.readAsDataURL(f);
+  }))).then(imgs => { _editImgs.push(...imgs); renderEditImgs(); e.target.value=''; });
 }
 
 // ── Draft ─────────────────────────────────────────────────────
