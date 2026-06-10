@@ -1,13 +1,47 @@
-{
-  "tk":  { "name": "Tra Tồn Kho",            "url": "https://docs.google.com/spreadsheets/d/1eH6EmjHM1oFkQoAiTrqUvWliLW5A5vvz/edit?usp=sharing&ouid=101936829308257506241&rtpof=true&sd=true", "sh": "tồn kho" },
-  "b1":  { "name": "Scan BBKT 2025",            "url": "https://1drv.ms/f/c/6091196ad18ed3e0/IgDg526d4mC1SZMyxc9ebAdKAT7ZLiWZA8WaAHNO0Z6F5IA?e=9DJWAg" },
-  "b2":  { "name": "Scan BBKT 2026",            "url": "https://1drv.ms/f/c/6091196ad18ed3e0/IgCTcHLYvZW8T7J12aWHRB9IAVelrodYgLYR0LrSBbyxaY4?e=Xebhnf" },
-  "b3":  { "name": "Scan BBKT 3",            "url": "" },
-  "p1":  { "name": "Theo dõi sc 2025",              "url": "https://docs.google.com/spreadsheets/d/1rfFTiX7RZggOT08gyMPaTskShm5C0Rui/edit?usp=sharing&ouid=101936829308257506241&rtpof=true&sd=true" },
-  "p2":  { "name": "Theo dõi SC 2026",               "url": "https://docs.google.com/spreadsheets/d/1qW7RiVoZ9ILiVxm4XsXLATZfIbh87Y54/edit?usp=sharing&ouid=101936829308257506241&rtpof=true&sd=true" },
-  "p4":  { "name": "P.KTAT 4",               "url": "" },
-  "s1":  { "name": "Lịch sử thiết bị cơ",   "url": "https://docs.google.com/spreadsheets/d/162bAlPrDAw5UuNBQgD-lzBkUsrtlIXna/edit?gid=1415831943#gid=1415831943" },
-  "s2":  { "name": "Lịch sử thiết bị điện", "url": "https://docs.google.com/spreadsheets/d/1tM94cewS3P7BLtOTBT1KtUNX9eTokjJG/edit?gid=443424189#gid=443424189" },
-  "s3":  { "name": "Báo cáo tuần",            "url": "/report.html" },
-  "s4":  { "name": "Gửi Mail PXNL",           "url": "https://email-notifier-production-fb05.up.railway.app" }
+﻿{
+    "tk":  {
+               "name":  "Tra Tá»“n Kho",
+               "url":  "https://docs.google.com/spreadsheets/d/1eH6EmjHM1oFkQoAiTrqUvWliLW5A5vvz/edit?usp=sharing\u0026ouid=101936829308257506241\u0026rtpof=true\u0026sd=true",
+               "sh":  "tá»“n kho"
+           },
+    "b1":  {
+               "name":  "Scan BBKT 2025",
+               "url":  "https://1drv.ms/f/c/6091196ad18ed3e0/IgDg526d4mC1SZMyxc9ebAdKAT7ZLiWZA8WaAHNO0Z6F5IA?e=9DJWAg"
+           },
+    "b2":  {
+               "name":  "Scan BBKT 2026",
+               "url":  "https://1drv.ms/f/c/6091196ad18ed3e0/IgCTcHLYvZW8T7J12aWHRB9IAVelrodYgLYR0LrSBbyxaY4?e=Xebhnf"
+           },
+    "b3":  {
+               "name":  "Scan BBKT 3",
+               "url":  ""
+           },
+    "p1":  {
+               "name":  "Theo dÃµi sc 2025",
+               "url":  "https://docs.google.com/spreadsheets/d/1rfFTiX7RZggOT08gyMPaTskShm5C0Rui/edit?usp=sharing\u0026ouid=101936829308257506241\u0026rtpof=true\u0026sd=true"
+           },
+    "p2":  {
+               "name":  "Theo dÃµi SC 2026",
+               "url":  "https://docs.google.com/spreadsheets/d/1qW7RiVoZ9ILiVxm4XsXLATZfIbh87Y54/edit?usp=sharing\u0026ouid=101936829308257506241\u0026rtpof=true\u0026sd=true"
+           },
+    "p4":  {
+               "name":  "P.KTAT 4",
+               "url":  ""
+           },
+    "s1":  {
+               "name":  "Lá»‹ch sá»­ thiáº¿t bá»‹ cÆ¡",
+               "url":  "https://docs.google.com/spreadsheets/d/162bAlPrDAw5UuNBQgD-lzBkUsrtlIXna/edit?gid=1415831943#gid=1415831943"
+           },
+    "s2":  {
+               "name":  "Lá»‹ch sá»­ thiáº¿t bá»‹ Ä‘iá»‡n",
+               "url":  "https://docs.google.com/spreadsheets/d/1tM94cewS3P7BLtOTBT1KtUNX9eTokjJG/edit?gid=443424189#gid=443424189"
+           },
+    "s3":  {
+               "name":  "BÃ¡o cÃ¡o tuáº§n",
+               "url":  "/report.html"
+           },
+    "s4":  {
+               "name":  "Gui Mail PXNL",
+               "url":  "https://recognition-web-book-helicopter.trycloudflare.com"
+           }
 }
