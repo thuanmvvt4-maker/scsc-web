@@ -9,5 +9,5 @@
   "s1":  { "name": "Lịch sử thiết bị cơ",   "url": "https://docs.google.com/spreadsheets/d/162bAlPrDAw5UuNBQgD-lzBkUsrtlIXna/edit?gid=1415831943#gid=1415831943" },
   "s2":  { "name": "Lịch sử thiết bị điện", "url": "https://docs.google.com/spreadsheets/d/1tM94cewS3P7BLtOTBT1KtUNX9eTokjJG/edit?gid=443424189#gid=443424189" },
   "s3":  { "name": "Báo cáo tuần",            "url": "/report.html" },
-  "s4":  { "name": "Gửi Mail PXNL",           "url": "https://closely-bands-clothes-mobility.trycloudflare.com" }
+  "s4":  { "name": "Gửi Mail PXNL",           "url": "https://api.trycloudflare.com" }
 }
