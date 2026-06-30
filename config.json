@@ -1,7 +1,7 @@
 ﻿{
   "tk":  { "name": "Tra Tồn Kho",            "url": "https://docs.google.com/spreadsheets/d/1sJLLA-aGJGftr3l_1xh1Awi4dDQDzt04/edit?usp=sharing&ouid=101936829308257506241&rtpof=true&sd=true", "sh": "tồn kho" },
-  "b1":  { "name": "Scan BBKT 2025",            "url": "https://evngenco3pm-my.sharepoint.com/personal/ypn_eps_genco3_vn/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fypn%5Feps%5Fgenco3%5Fvn%2FDocuments%2FC%C3%94NG%20VI%E1%BB%86C%2FVT4%2F07%2E%20H%E1%BB%93%20s%C6%A1%20BBKT%20%28Scan%29&ga=1" },
-  "b2":  { "name": "Scan BBKT 2026",            "url": "https://evngenco3pm-my.sharepoint.com/personal/tronglt_eps_genco3_vn/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Ftronglt%5Feps%5Fgenco3%5Fvn%2FDocuments%2FH%E1%BB%93%20s%C6%A1%20nghi%E1%BB%87m%20thu%20SCTX%20VT4%2FBBNT%20%28file%20scan%29&ga=1" },
+  "b1":  { "name": "Scan BBKT",            "url": "https://evngenco3pm-my.sharepoint.com/personal/ypn_eps_genco3_vn/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fypn%5Feps%5Fgenco3%5Fvn%2FDocuments%2FC%C3%94NG%20VI%E1%BB%86C%2FVT4%2F07%2E%20H%E1%BB%93%20s%C6%A1%20BBKT%20%28Scan%29&ga=1" },
+  "b2":  { "name": "Scan BBNT",            "url": "https://evngenco3pm-my.sharepoint.com/personal/tronglt_eps_genco3_vn/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Ftronglt%5Feps%5Fgenco3%5Fvn%2FDocuments%2FH%E1%BB%93%20s%C6%A1%20nghi%E1%BB%87m%20thu%20SCTX%20VT4%2FBBNT%20%28file%20scan%29&ga=1" },
   "b3":  { "name": "Scan BBKT 3",            "url": "" },
   "p1":  { "name": "Theo dõi sc 2025",              "url": "https://docs.google.com/spreadsheets/d/1rfFTiX7RZggOT08gyMPaTskShm5C0Rui/edit?usp=sharing&ouid=101936829308257506241&rtpof=true&sd=true" },
   "p2":  { "name": "Theo dõi SC 2026",               "url": "https://docs.google.com/spreadsheets/d/1G1fjgtaLOnvmq8GeOGhtulk_767I0x6i/edit?usp=sharing&ouid=101936829308257506241&rtpof=true&sd=true" },
